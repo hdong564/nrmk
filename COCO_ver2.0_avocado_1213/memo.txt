@@ -1,0 +1,88 @@
+
+
+
+UI, CB가 상호작용
+
+index.py 실행으로 thread 여러개 start
+
+app_ui_client        |   x
+app_recipe_ui_client |   y
+
+FryingTemplateApp    |   X
+KyochonFryingApp     |   Y
+
+
+
+1. app_ui (app_ui_client X])
+    
+    - GLOBAL_FLAG[run] is true 일때 while loop으로 계속 실행이 됨. 
+
+    a. 작업시간 update (from x to X)
+    b. 로봇상태 (from x to X) register 5
+    b. [check f_pos] read holding register(22,23,24,25) (from X to x) -> 조리가 종료 되었는가? 
+    c. [check w_pos] read holding register(52 ~ 59) (from X to x) -> w_pos status에 recipe 저장
+        ORDER_LIST에 w_pos append -> 작업해야할거 결정? 
+    d. [check WAITING_POINT] check basket status -> write reg(26~33) [empty / nothing / fried ]
+    e. direct teaching on off register(42, 210 for button status)
+    f. gripper, register(43,211)
+    g. reset robot, register(44) also, set 0 to basket status
+    h. default program register(init start resume pause stop 0 1 2 3 4 regnum(45))
+    j. home,zero,packing?(not yet) position move register(49)
+    k. recipe reset reg(34~)
+    // basket상태 [waiting 0] [pre cook 1] [done cook 2] [cooking 3] 
+    // basket select [no 0] [yes 1]
+    // basket recipe [waiting 0] [recipe num n]
+
+2. app_recipe_ui
+    a. check weather client open
+    b. for each recipe(i = 0 to 9) {
+        recipe setting
+        
+        PsuedoCode 
+        use RECIPE_DATA_APP table with {
+            r[0] + r[1] = total_time
+            r[2] = shake1_status
+            r[4] + r[5] = time_until_shake1
+            r[6] = shake2_status
+            r[8] + r[9] = time_until_shake2
+            r[10] = shake3_status
+            r[12] + r[13] = time_until_shake3
+            r[15] = time_until_shake1
+            r[16] = time_until_shake2 - time_until_shake1
+            r[17] = time_until_shake3 - time_until_shake2
+            r[18] = total_time - time_until_shake3
+        }       
+       }
+
+3. commander
+    a. initialize -> set dT false, 
+    b. robot_status -> if reset required? -> indy_master.reset_robot()
+       ui_requst processing (home_pos, direct_teachingl)
+    '''''' commander begin ''''''
+    c. check command cleared??
+    d. make work through chicken_logic.py
+    e. if there is new job, print robot status, new job message
+       else work = UI_REQUESTED_JOB(created on rt_status_update thread)
+        here, next_work follows chicken_logic
+
+    f. command running true, nextwork -> work and, '''set_job(work)'''
+        for ' set_job(work) ' 
+        -   cmd: current job
+        -   represent next work on terminal
+        -   cmd start !!!
+        -   proccess, CLEAR_RUNNING_COMMAND, weather test_mode, 
+        -   handle if   cmd type status
+        -   handle elif cmd type cooking_time
+        -   handle else cmd type LIMB
+    g. handle exception sys
+
+4. rt_status_update 
+    basket status decision through photo sensor(empty or not ?)
+
+5. safety_thread
+    not developed yet
+    safety for robot?
+
+6. data_logging 
+    just print loggers
+

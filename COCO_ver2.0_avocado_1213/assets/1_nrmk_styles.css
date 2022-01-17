@@ -1,0 +1,238 @@
+/* header */
+
+html {height:100%}
+body {
+  height: 100%;
+  margin: 0;
+}
+
+#react-entry-point, #page-content, #_dash-global-error-container,
+#_dash-app-content,
+#_dash-global-error-container > div,
+#_dash-global-error-container > div > div:nth-last-child(1),
+#_dash-global-error-container > div > div:nth-last-child(1) > div,
+#_dash-global-error-container > div > div:nth-last-child(1) > div > ._dash-app-content {
+  height: 100%;
+}
+#main-tabs-parent {height: 7%;}
+#main-tabs-content {height: 93%;}
+#id_battering_button.selected {
+  background-color: green;
+}
+
+.btn.clicked {
+  background-color: green;
+}
+
+.order {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  height: 50%;
+}
+
+.order-list {
+  display: inline-block;
+  background-color: lightslategray;
+  overflow-y: auto;
+  width : 20%;
+  height: 100%;
+}
+
+.order-menu {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  background-color: lightslategray;
+  width: 80%;
+  height: 80%;
+}
+
+.order-menu > div {
+  display: inline-flex;
+  background-color: white;
+}
+
+.order-menu > .order-menu-item-small {
+  width: calc(20% - 4px);
+  height: calc(50% - 4px);
+  margin: 2px;
+}
+
+.order-menu > .order-menu-item-big {
+  width: calc(20% - 4px);
+  height: calc(100% - 4px);
+  margin: 2px;
+}
+
+.main-control-buttons {
+  width: 80%;
+  height: 20%;
+  background-color: lightslategray;
+}
+
+.btn-main-robot-ctrl {
+  width: calc(50% - 4px);
+  height: calc(100% - 4px);
+  margin: 2px;
+}
+
+.main-robot-indicator {
+  width: 100%;
+  height: 10%;
+}
+
+#id_robot_state_indicator{
+  width: 100%;
+  height: 100%;
+}
+
+#id_next_work {
+  width: 100%;
+  height: 100%;
+}
+
+.align-center-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Controller Styles */
+#controller-container {
+  width: calc(100% - 2em);
+  height: calc(100% - 2em);
+  padding: 1em;
+  background-color: lightslategray;
+}
+
+#ctrl-robot, #ctrl-lm {
+  display: block;
+  background-color: white;
+  width: calc(100% - 4em);
+  padding: 2em;
+  border-radius: 2em;
+  overflow-x: auto;
+}
+
+.btn-ctrl-robot {
+  height: initial;
+  padding: 2em;
+}
+
+.btn {
+  font-size: 2em;
+}
+
+.bg-while {
+  background-color: white;
+}
+
+.bg-gray {
+  background-color: gray;
+}
+
+#btn-ctrl-robot-program {
+  background-color: yellow;
+  color: darkred;
+}
+
+#btn-ctrl-robot-program.selected {
+  background-color: lightgray;
+  color: darkblue;
+}
+
+#btn-ctrl-robot-direct-teaching {
+  color: darkblue;
+}
+
+#btn-ctrl-robot-direct-teaching.selected {
+  color: green;
+}
+
+#btn-ctrl-robot-test.selected {
+  background-color: green;
+}
+
+#ctrl-input-program-cmd {
+  width: 100%;
+}
+
+#btn-ctrl-robot-cmd {
+  width: 100%;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#btn-ctrl-lm-free-run.selected {
+  background-color: green;
+}
+
+.ctrl-divider {
+  display: inline-block;
+  width: 0.5em;
+}
+
+.tab {padding: 0;}
+
+.container {
+  width: 80%; }
+.column,
+.columns {
+  margin-left: 0.5%; }
+.column:first-child,
+.columns:first-child {
+  margin-left: 0; }
+
+.one.column,
+.one.columns                    { width: 8%;             }
+.two.columns                    { width: 16.25%;         }
+.three.columns                  { width: 22%;            }
+.four.columns                   { width: 33%;            }
+.five.columns                   { width: 39.3333333333%; }
+.six.columns                    { width: 49.75%;          }
+.seven.columns                  { width: 56.6666666667%; }
+.eight.columns                  { width: 66.5%;          }
+.nine.columns                   { width: 74.0%;          }
+.ten.columns                    { width: 82.6666666667%; }
+.eleven.columns                 { width: 91.5%; }
+.twelve.columns                 { width: 100%; margin-left: 0; }
+
+.one-third.column               { width: 30.6666666667%; }
+.two-thirds.column              { width: 65.3333333333%; }
+
+.one-half.column                { width: 48%; }
+
+/* Offsets */
+.offset-by-one.column,
+.offset-by-one.columns          { margin-left: 8.66666666667%; }
+.offset-by-two.column,
+.offset-by-two.columns          { margin-left: 17.3333333333%; }
+.offset-by-three.column,
+.offset-by-three.columns        { margin-left: 26%;            }
+.offset-by-four.column,
+.offset-by-four.columns         { margin-left: 34.6666666667%; }
+.offset-by-five.column,
+.offset-by-five.columns         { margin-left: 43.3333333333%; }
+.offset-by-six.column,
+.offset-by-six.columns          { margin-left: 52%;            }
+.offset-by-seven.column,
+.offset-by-seven.columns        { margin-left: 60.6666666667%; }
+.offset-by-eight.column,
+.offset-by-eight.columns        { margin-left: 69.3333333333%; }
+.offset-by-nine.column,
+.offset-by-nine.columns         { margin-left: 78.0%;          }
+.offset-by-ten.column,
+.offset-by-ten.columns          { margin-left: 86.6666666667%; }
+.offset-by-eleven.column,
+.offset-by-eleven.columns       { margin-left: 95.3333333333%; }
+
+.offset-by-one-third.column,
+.offset-by-one-third.columns    { margin-left: 34.6666666667%; }
+.offset-by-two-thirds.column,
+.offset-by-two-thirds.columns   { margin-left: 69.3333333333%; }
+
+.offset-by-one-half.column,
+.offset-by-one-half.columns     { margin-left: 52%; }
