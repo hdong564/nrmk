@@ -1,0 +1,35 @@
+coffee_expiry_time: 600
+db_charset: utf8
+db_host: 192.168.137.11
+db_login_timeout: 5
+db_name: KIOSK
+db_pwd: NEUROMEKA1234
+db_timeout: 5
+db_user: NEUROMEKA
+espresso_machine_long_delay_1: 8
+espresso_machine_long_delay_2: 8
+espresso_machine_shot_delay_1: 4
+espresso_machine_shot_delay_2: 4
+robot_dof: 6
+water_only: 0
+milk_refresh_duration: 1500
+ice_only: 4
+ice_and_water: 1
+cup_disp_packet_len: 11
+ice_disp_packet_len: 5
+lift_delay: 2
+lift_cup_delay: 1
+
+# 1 아이스아메리카노
+# 2 아메리카노
+# 3 카페라떼
+# 4 아이스카페라떼
+# 5 카푸치노
+# 6 아이스카푸치노
+coffee_map:
+  '00000001': 0
+  '00000002': 3
+  '00000003': 4
+  '00000004': 1
+  '00000005': 5
+  '00000006': 2
