@@ -183,5 +183,57 @@ def get_frying_time(menu):
         else:
             return 0
 
+
+# helper function
+def TransToSec(min,sec):
+    return 60*min + sec
+
+# Recipe structure
+class Recipe:
+    def __init__(self,Recipe_Array):
+        self.is_shake1 = Recipe_Array[2]
+        self.is_shake2 = Recipe_Array[6]
+        self.is_shake3 = Recipe_Array[10]
+        self.array = Recipe_Array
+        self.total_time   = TransToSec(Recipe_Array[0], Recipe_Array[1])
+        self.until_shake1 = TransToSec(Recipe_Array[4],Recipe_Array[5])
+        self.until_shake2 = TransToSec(Recipe_Array[8],Recipe_Array[9]) 
+        self.until_shake3 = TransToSec(Recipe_Array[12], Recipe_Array[13])
+    # def TransToSec(min,sec):
+    #     return 60*min + sec
+    def no_shaking(self):
+        if not self.is_shake1 and not self.is_shake2 and not self.is_shake3:
+            return 1
+        else: 
+            return 0
+
+    def intervals_shake1(self):
+        result = []
+        result.append(self.until_shake1)
+        result.append(self.total_time - self.until_shake1)
+        return result
+        # result = [intv1 < intv2]
+    def intervals_shake2(self):
+        result = []
+        result.append(self.until_shake1)
+        result.append(self.until_shake2 - self.until_shake1)
+        result.append(self.total_time - self.until_shake2)
+        return result
+        # result = [intv1 < intv2 < intv3]
+    def intervals_shake3(self):
+        result = []
+        result.append(self.until_shake1)
+        result.append(self.until_shake2 - self.until_shake1)
+        result.append(self.until_shake3 - self.until_shake2)
+        result.append(self.total_time - self.until_shake3)
+        return result
+        # result = [intv1 < intv2 < intv3 < intv4]
+    def total_time(self):
+        result = []
+        result.append(self.until_shake2 - self.until_shake1)
+        result.append(self.total_time - self.until_shake2 - self.until_shake1)
+        val = TransToSec(self.array[0], self.array[1])
+
+
 # def get_status_code(pos):
 #     return pos_state_nc[STATUS_POS[pos]]

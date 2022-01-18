@@ -381,40 +381,24 @@ def app_recipe_ui():
                 for i in range(10):
                     for j in range(15):
                         RECIPE_DATA_APP[i][j] = app_recipe_ui_client.read_holding_registers(60+15*i+j, 1)[0]
-
-                        #레시피 세팅
-                        #각각 시간 파악
-                        if (RECIPE_DATA_APP[i][2] + RECIPE_DATA_APP[i][6] + RECIPE_DATA_APP[i][10] == 0):#흔들기 없는 경우
-                            RECIPE_DATA_APP[i][18] = RECIPE_DATA_APP[i][0]*60 + RECIPE_DATA_APP[i][1]  #shaked3 조리시간
-
-                        elif (RECIPE_DATA_APP[i][2] + RECIPE_DATA_APP[i][6] + RECIPE_DATA_APP[i][10] == 1):#흔들기 1회
-                            if (RECIPE_DATA_APP[i][4] == 0) and (RECIPE_DATA_APP[i][5] == 0):#흔들기 1회 바로하는 경우
-                                RECIPE_DATA_APP[i][18] = RECIPE_DATA_APP[i][0]*60 + RECIPE_DATA_APP[i][1]  #shaked3                            
-                            else: #흔들기 1회 나중에 하는 경우                        
-                                RECIPE_DATA_APP[i][15] = RECIPE_DATA_APP[i][4]*60 + RECIPE_DATA_APP[i][5] #notshaked1
-                                RECIPE_DATA_APP[i][18] =  RECIPE_DATA_APP[i][0]*60 + RECIPE_DATA_APP[i][1] - RECIPE_DATA_APP[i][15] #shaked3
-                        
-                        elif (RECIPE_DATA_APP[i][2] + RECIPE_DATA_APP[i][6] + RECIPE_DATA_APP[i][10] == 2):#흔들기 2회
-                            if (RECIPE_DATA_APP[i][4] == 0) and (RECIPE_DATA_APP[i][5] == 0):#흔들기 1회 바로하는 경우
-                                RECIPE_DATA_APP[i][17] = RECIPE_DATA_APP[i][8]*60 + RECIPE_DATA_APP[i][9]    #shaked2
-                                RECIPE_DATA_APP[i][18] = RECIPE_DATA_APP[i][0]*60 + RECIPE_DATA_APP[i][1] - RECIPE_DATA_APP[i][17]  #shaked3                            
-                            else: #흔들기 1회 나중에 하는 경우
-                                RECIPE_DATA_APP[i][15] = RECIPE_DATA_APP[i][4]*60 + RECIPE_DATA_APP[i][5]    #notshaked1
-                                RECIPE_DATA_APP[i][17] = RECIPE_DATA_APP[i][8]*60 + RECIPE_DATA_APP[i][9] - RECIPE_DATA_APP[i][15]    #shaked2 
-                                RECIPE_DATA_APP[i][18] = RECIPE_DATA_APP[i][0]*60 + RECIPE_DATA_APP[i][1] - RECIPE_DATA_APP[i][17] - RECIPE_DATA_APP[i][15]  #shaked3
-                        
-                        elif (RECIPE_DATA_APP[i][2] + RECIPE_DATA_APP[i][6] + RECIPE_DATA_APP[i][10] == 3):#흔들기 3회
-                            if (RECIPE_DATA_APP[i][4] == 0) and (RECIPE_DATA_APP[i][5] == 0):#흔들기 1회 바로하는 경우
-                                RECIPE_DATA_APP[i][16] = RECIPE_DATA_APP[i][8]*60 + RECIPE_DATA_APP[i][9]    #shaked1
-                                RECIPE_DATA_APP[i][17] = RECIPE_DATA_APP[i][12]*60 + RECIPE_DATA_APP[i][13] - RECIPE_DATA_APP[i][16]   #shaked2 
-                                RECIPE_DATA_APP[i][18] = RECIPE_DATA_APP[i][0]*60 + RECIPE_DATA_APP[i][1] - RECIPE_DATA_APP[i][16] - RECIPE_DATA_APP[i][17]  #shaked3
-                            
-                            else: #흔들기 1회 나중에 하는 경우 
-                                RECIPE_DATA_APP[i][15] = RECIPE_DATA_APP[i][4]*60 + RECIPE_DATA_APP[i][5]    #notshaked1
-                                RECIPE_DATA_APP[i][16] = RECIPE_DATA_APP[i][8]*60 + RECIPE_DATA_APP[i][9] - RECIPE_DATA_APP[i][15]     #shaked1
-                                RECIPE_DATA_APP[i][17] = RECIPE_DATA_APP[i][12]*60 + RECIPE_DATA_APP[i][13] - RECIPE_DATA_APP[i][15] - RECIPE_DATA_APP[i][16]    #shaked2 
-                                RECIPE_DATA_APP[i][18] = RECIPE_DATA_APP[i][0]*60 + RECIPE_DATA_APP[i][1] - RECIPE_DATA_APP[i][15] - RECIPE_DATA_APP[i][16] - RECIPE_DATA_APP[i][17] #shaked3
-                
+                        # copy data first!
+                    recipe = Recipe(RECIPE_DATA_APP[i])
+                    if recipe.no_shaking():
+                        RECIPE_DATA_APP[i][18] = recipe.total_time
+                    elif recipe.is_shake1:
+                        RECIPE_DATA_APP[i][15] = recipe.intervals_shake1()[0]
+                        RECIPE_DATA_APP[i][18] = recipe.intervals_shake1()[1]
+                    elif recipe.is_shake2:
+                        RECIPE_DATA_APP[i][15] = recipe.intervals_shake2()[0]
+                        RECIPE_DATA_APP[i][17] = recipe.intervals_shake2()[1]
+                        RECIPE_DATA_APP[i][18] = recipe.intervals_shake2()[2]
+                    elif recipe.is_shake3:
+                        RECIPE_DATA_APP[i][15] = recipe.intervals_shake3()[0]
+                        RECIPE_DATA_APP[i][16] = recipe.intervals_shake3()[1]
+                        RECIPE_DATA_APP[i][17] = recipe.intervals_shake3()[2]
+                        RECIPE_DATA_APP[i][18] = recipe.intervals_shake3()[3]
+                    else: # no shaking 
+                        RECIPE_DATA_APP[i][18] = recipe.total_time()
             sleep(0.1)            
 
     finally:
