@@ -154,6 +154,12 @@ STATUS_NEXT_WORK = ['nothing']
 
 STATUS_FRIED_TIME_UI = dict([('f{}'.format(i), 0) for i in range(FRY_NUM)])
 
+
+'''for selecting menu'''
+MAIN_MENU  = 1
+SIDE_MENU  = 2
+DRINK_MENU = 3
+
 pos_nc = dict([(n, c) for c, n, *_ in POS_DATA]) #nametocode
 # pos_map = dict([[n, (c, n, t_pck, t_plc, t_s, t_as)] for c, n, t_pck, t_plc, t_s, t_as in POS_DATA])
 
@@ -209,14 +215,14 @@ class Recipe:
             return 1
         else: 
             return 0
-    def menu_main(self):
-        return self.is_main
-    
-    def menu_side(self):
-        return self.is_side
+    def get_menu(self):
+        if self.is_main:
+            return 1
+        elif self.is_side:
+            return 2
+        elif self.is_drink:
+            return 3
 
-    def menu_drink(self):
-        return self.is_drink
 
     def intervals_shake1(self):
         result = []
