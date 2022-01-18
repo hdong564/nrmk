@@ -1,7 +1,7 @@
 from time import time, sleep
 import copy
 
-CB_IP = "192.168.0.53"
+CB_IP = "192.168.0.46"
 
 GLOBAL_FLAG = {'run': False, 'test_mode': False, 'isChanged': False, 'menu_end1':False, 'menu_end2':False, 'menu_end3':False, 'menu_end4':False, 'menu_end5':False, 'menu_end6':False, 'menu_end7':False, 'menu_end8':False }
 
