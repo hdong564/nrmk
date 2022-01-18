@@ -481,8 +481,10 @@ def commander():
             ''' handle if there is no work'''
             if work is not None:
                 print(f"[{STATUS_ROBOT['system']}] new job: {work.__repr__()}")
-                print(" im here !!")
-            if work is None:
+                print(f"Work state: {work.get_next_job}")
+            # decide which work todo.
+            
+            if work is None: # if there is no work, implement UI_requested work!!
                 IS_COMMAND_RUNNING = False
                 if UI_REQUESTED_JOB is None:
                     STATUS_NEXT_WORK[0] = 'nothing'
@@ -492,6 +494,7 @@ def commander():
                     STATUS_NEXT_WORK[0] = work.__repr__()
                     set_job(work)
             else:
+                # if there is work, set job of that work !!
                 IS_COMMAND_RUNNING = True
                 STATUS_NEXT_WORK[0] = work.__repr__()
                 set_job(work)

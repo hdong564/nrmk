@@ -18,10 +18,11 @@ def next_work():
     usable_place_num = [i for i in range(FRY_NUM) if STATUS_POS_USABLE['f{}'.format(i)]]
 
     for i in usable_place_num:
+        #print("place usable")
         f_pos = 'f{}'.format(i)
         status_f_pos = STATUS_POS[f_pos]
-        if status_f_pos != 'nothing':
-
+        if status_f_pos != 'nothing': # when basket placed on frying machine 0th order task toto[2].append
+            #print("status f pos not nothing")
             recipe_num = int(status_f_pos[-2:])
 
             # 0 순위 작업 #fry끝난거 먼저
@@ -38,9 +39,9 @@ def next_work():
                     print("Fry fin pos->", PREV_POS_DATA[f_pos]) #test
                     # STATUS_FRIED_TIME_UI[f_pos] = 0
                     EARLY_FIN[f_pos] = False
-                    todo[0].append(cmd)
+                    todo[0].append(cmd) # 제일 먼저 !!!!
 
-            if ('waitshaking1' in status_f_pos): #흔들기 유무에 따라
+            if ('waitshaking1' in status_f_pos): #
                 if (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 1):#흔들기 1회
                     cmd = CommandJob()
                     cmd.clear_commands()
@@ -124,7 +125,7 @@ def next_work():
         else:
             recipe_num = 0
         #################ZONE별로 다른 프라이에##############set1
-        if (w_pos == 'w0') or (w_pos == 'w2'):
+        if (w_pos == 'w0') or (w_pos == 'w2'): # todo[1].append
             f_pos = 'f0'
             print("using fry 1") ##debug용
             if (0 < recipe_num < 11) and (STATUS_POS[f_pos] == 'nothing') and (WAITING_POINT[w_pos] == 'nothing'): #wait에 음식 ---> fry에 튀기기 #위치저장
@@ -216,7 +217,7 @@ def next_work():
                 del ORDER_LIST[0]
                 ORDER_LIST.append(w_pos)        
 
-        elif (w_pos == 'w1') or (w_pos == 'w3'):
+        elif (w_pos == 'w1') or (w_pos == 'w3'):# todo[1].append
             f_pos = 'f1'
             print("using fry 2") ##debug용
             if (0 < recipe_num < 11) and (STATUS_POS[f_pos] == 'nothing') and (WAITING_POINT[w_pos] == 'nothing'): #wait에 음식 ---> fry에 튀기기 #위치저장
@@ -493,6 +494,7 @@ def next_work():
                 ORDER_LIST.append(w_pos)                    
 
     # 다음 작업 결정 
+    #print(todo) for debugging
     if todo[0]:
         for work in todo[0]:
             return work           
@@ -510,6 +512,9 @@ def next_work():
         cmd.clear_commands()
         cmd.add_cmd(CMD_WAIT_CMD())
         work = cmd
+        
+        if work is not None:
+            print("work well !!")
         return work  
             
     return None
