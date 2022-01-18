@@ -29,7 +29,9 @@ COMMAND_LIMB_FRY_SHAKE              = 150
 # COMMAND_LIMB_FRY_PLACE_N_SHAKE      = 180
 # COMMAND_LIMB_CUSTOM_MOTION          = 200
 # COMMAND_LIMB_FINISH                 = 255
-COMMAND_LIMB_WAIT_CMD               = 3
+COMMAND_LIMB_WAIT_CMD               = 3 
+
+'''All consts abovve are B variables'''
 
 
 class CommandParam():

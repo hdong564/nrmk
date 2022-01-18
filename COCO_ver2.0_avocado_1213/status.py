@@ -199,6 +199,9 @@ class Recipe:
         self.until_shake1 = TransToSec(Recipe_Array[4],Recipe_Array[5])
         self.until_shake2 = TransToSec(Recipe_Array[8],Recipe_Array[9]) 
         self.until_shake3 = TransToSec(Recipe_Array[12], Recipe_Array[13])
+        self.is_main  = Recipe_Array[19] # Chicken or something
+        self.is_side  = Recipe_Array[20] # Fried potato or something
+        self.is_drink = Recipe_Array[21] # Beer!
     # def TransToSec(min,sec):
     #     return 60*min + sec
     def no_shaking(self):
@@ -206,6 +209,14 @@ class Recipe:
             return 1
         else: 
             return 0
+    def menu_main(self):
+        return self.is_main
+    
+    def menu_side(self):
+        return self.is_side
+
+    def menu_drink(self):
+        return self.is_drink
 
     def intervals_shake1(self):
         result = []

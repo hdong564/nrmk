@@ -111,7 +111,7 @@ def next_work():
         # print(WAITING_POINT(ORDER_LIST[0]))
         print("##################################################")
         w_pos = ORDER_LIST[0]    #포토센서 보고 작업하기 WAITING_POINT  #commander에서 유무 판단
-        # WAITING_POINT['w0'] = 'empty' ###Test web
+        WAITING_POINT['w0'] = 'empty' ###Test web
         # WAITING_POINT['w1'] = 'empty'
         # WAITING_POINT['w2'] = 'empty' ###Test web
         # WAITING_POINT['w3'] = 'empty'
@@ -513,8 +513,8 @@ def next_work():
         cmd.add_cmd(CMD_WAIT_CMD())
         work = cmd
         
-        if work is not None:
-            print("work well !!")
+        # if work is not None:
+        #     #print("work well !!")
         return work  
             
     return None

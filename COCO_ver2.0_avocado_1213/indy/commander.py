@@ -90,10 +90,12 @@ def set_job(job):
                 if not GLOBAL_FLAG['test_mode']:
                     indy_master.write_direct_variable(0, COMMANDER_ADDR, cmd.params)
                     while GLOBAL_FLAG['run'] and not CLEAR_RUNNING_COMMAND:
+                        #print("# ", end = "")
                         if indy_master.read_direct_variable(0, COMMANDER_ADDR) == 0:
                             break
                         else:
                             sleep(0.05) #서버 응답용 통상 0.02~0.05s
+                        '''wait until CLEAR_RUNNING_COMMAND done ?'''
                 else:
                     sleep(1)
     
@@ -481,9 +483,8 @@ def commander():
             ''' handle if there is no work'''
             if work is not None:
                 print(f"[{STATUS_ROBOT['system']}] new job: {work.__repr__()}")
-                print(f"Work state: {work.get_next_job}")
+                #print(f"Work state: {work.get_next_job}")
             # decide which work todo.
-            
             if work is None: # if there is no work, implement UI_requested work!!
                 IS_COMMAND_RUNNING = False
                 if UI_REQUESTED_JOB is None:

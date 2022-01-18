@@ -381,10 +381,11 @@ def app_recipe_ui():
                 for i in range(10):
                     for j in range(15):
                         RECIPE_DATA_APP[i][j] = app_recipe_ui_client.read_holding_registers(60+15*i+j, 1)[0]
-                    for k in range(19,22):
-                        RECIPE_DATA_APP[i][k] = app_recipe_ui_client.read_holding_registers()
+                    for k in range(3):
+                        RECIPE_DATA_APP[i][19+k] = app_recipe_ui_client.read_holding_registers(218+3*i+k, 1)[0]
                         # copy data first!
                     recipe = Recipe(RECIPE_DATA_APP[i])
+                    #if recipe.menu_main() | recipe.menu_side():
                     if recipe.no_shaking():
                         RECIPE_DATA_APP[i][18] = recipe.total_time
                     elif recipe.is_shake1:
