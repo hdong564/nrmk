@@ -381,6 +381,8 @@ def app_recipe_ui():
                 for i in range(10):
                     for j in range(15):
                         RECIPE_DATA_APP[i][j] = app_recipe_ui_client.read_holding_registers(60+15*i+j, 1)[0]
+                    for k in range(19,22):
+                        RECIPE_DATA_APP[i][k] = app_recipe_ui_client.read_holding_registers()
                         # copy data first!
                     recipe = Recipe(RECIPE_DATA_APP[i])
                     if recipe.no_shaking():
