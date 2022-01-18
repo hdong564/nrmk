@@ -14,7 +14,7 @@ WAIT_NUM = 8 #waintpoint 개수
 
 ORDER_LIST = []
 
-RECIPE_DATA_APP= [[0]*19 for i in range(10)]
+RECIPE_DATA_APP= [[0]*22 for i in range(10)]
 
 END_COUNT = {'num' : 0}
 
