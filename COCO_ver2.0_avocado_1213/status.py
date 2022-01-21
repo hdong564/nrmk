@@ -44,7 +44,7 @@ POS_DATA = [
 EARLY_FIN= {'f0' : False, 'f1' : False, 'f2' : False, 'f3' : False}
 
 '''handling already cooking basket'''
-COOKING_FLAG = dict([('w{}'.format(i), False) for i in range(BASKET_NUM)])
+COOKING_FLAG = dict([('w{}'.format(i), 'no recipe') for i in range(BASKET_NUM)])
 
 # 메뉴 : 치킨, 감자, 순살
 
