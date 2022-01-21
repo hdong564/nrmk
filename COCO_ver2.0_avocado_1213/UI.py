@@ -192,7 +192,6 @@ def app_ui():
                         if (app_ui_client.read_holding_registers(26+i, 1)[0] != 3):
                             app_ui_client.write_multiple_registers(26+i, [1]) #조리 전
                     elif (WAITING_POINT[w_pos] == 'nothing') and ('fried' in STATUS_POS[w_pos]):  #조리 완료
-                        '''set flag 0 !!!!!'''
                         COOKING_FLAG[w_pos] = "waiting recipe"
                         app_ui_client.write_multiple_registers(26+i, [2])#조리 완료                        
                         # app_ui_client.write_multiple_registers(34+i, [0]) #바스켓 레시피 초기화 신호
