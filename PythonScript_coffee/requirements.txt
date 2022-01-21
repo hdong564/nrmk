@@ -1,3 +1,0 @@
-#/usr/bin/lsb_release - edit #! /usr/bin/python3.4
-pyyaml
-pyserial

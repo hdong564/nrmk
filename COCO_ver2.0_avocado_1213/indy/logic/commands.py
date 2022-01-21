@@ -31,6 +31,13 @@ COMMAND_LIMB_FRY_SHAKE              = 150
 # COMMAND_LIMB_FINISH                 = 255
 COMMAND_LIMB_WAIT_CMD               = 3 
 
+'''commands for Fried 'Potato' '''
+COMMAND_LIMB_POTATO_PICKUP = 200
+COMMAND_LIMB_POTATO_PLACE_MACHINE = 210
+COMMAND_LIMB_POTATO_WAIT_POTATOS = 220
+COMMAND_LIMB_POTATO_PLACE_FRY = 230
+
+
 '''All consts abovve are B variables'''
 
 
@@ -115,56 +122,56 @@ class CMD_AIR_SHAKE(CommandBase):
     def done(self):        
         STATUS_POS[self.pos] = "nothing"
 
-# class CMD_READY_PICKUP(CommandBase):
-#     is_chicken = True
-#     def __init__(self):
-#         self.name = 'ready'
-#         super().__init__(self.name, pos_map[self.name][3])
+'''class CMD_READY_PICKUP(CommandBase):
+    is_chicken = True
+    def __init__(self):
+        self.name = 'ready'
+        super().__init__(self.name, pos_map[self.name][3])
 
-#     def start(self):
-#         status_code = get_status_code(self.name)
-#         if status_code >= 10 and 0 < (status_code % 10) <= 1:
-#             self.is_chicken = True
-#         else:
-#             self.is_chicken = False
+    def start(self):
+        status_code = get_status_code(self.name)
+        if status_code >= 10 and 0 < (status_code % 10) <= 1:
+            self.is_chicken = True
+        else:
+            self.is_chicken = False
 
-#     def obtain_commands(self):
-#         if self.is_chicken:
-#             return [
-#                 CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME),
-#                 CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME_TO_READY),
-#                 CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_PICKUP),
-#             ] + [
-#                 CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_TO_HOME)
-#             ]
-#         else:
-#             return [
-#                 CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME),
-#                 CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME_TO_READY),
-#                 CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_PICKUP_WO_SHAKE),
-#                 CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_TO_HOME)
-#             ]
+    def obtain_commands(self):
+        if self.is_chicken:
+            return [
+                CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME),
+                CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME_TO_READY),
+                CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_PICKUP),
+            ] + [
+                CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_TO_HOME)
+            ]
+        else:
+            return [
+                CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME),
+                CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME_TO_READY),
+                CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_PICKUP_WO_SHAKE),
+                CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_TO_HOME)
+            ]
 
-#     def done(self):
-#         STATUS_ROBOT["holding"] = STATUS_POS[self.pos]
-#         STATUS_POS[self.pos] = "nothing"
+    def done(self):
+        STATUS_ROBOT["holding"] = STATUS_POS[self.pos]
+        STATUS_POS[self.pos] = "nothing"
 
-# class CMD_READY_PLACE(CommandBase):
-#     def __init__(self):
-#         name = 'ready'
-#         super().__init__(name, pos_map[name][4])
+class CMD_READY_PLACE(CommandBase):
+    def __init__(self):
+        name = 'ready'
+        super().__init__(name, pos_map[name][4])
 
-#     def obtain_commands(self):
-#         return [
-#             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME),
-#             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME_TO_READY),
-#             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_PLACE),
-#             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_TO_HOME)
-#         ]
+    def obtain_commands(self):
+        return [
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME),
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME_TO_READY),
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_PLACE),
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_READY_TO_HOME)
+        ]
     
-#     def done(self):
-#         STATUS_POS[self.pos] = STATUS_ROBOT["holding"]
-#         STATUS_ROBOT["holding"] = "nothing"
+    def done(self):
+        STATUS_POS[self.pos] = STATUS_ROBOT["holding"]
+        STATUS_ROBOT["holding"] = "nothing"'''
 
 class CMD_WAIT_PLACE(CommandBase):
     def obtain_commands(self):
@@ -210,7 +217,6 @@ class CMD_WAIT_PICKUP(CommandBase):
         STATUS_ROBOT["holding"] = STATUS_POS[self.pos]
         STATUS_POS[self.pos] = "nothing"
         
-
 class CMD_FRY_PLACE(CommandBase):    
     def obtain_commands(self):
         r_n = int(STATUS_POS[self.pos][-2:])
@@ -290,50 +296,50 @@ class CMD_FRY_PICKUP_N_SHAKE(CommandBase):
         print("CMD_FRY_PICKUP_N_SHAKE COOKING_TIME CHANGED:", self.pos, prev_time, "->", f"{time} ({get_frying_time(STATUS_POS[self.pos])})")
         STATUS_FRIED_TIME[self.pos] = time
 
-# class CMD_FRY_PLACE_N_SHAKE(CommandBase):
-#     def obtain_commands(self):
-#         return [
-#             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_FRY_PLACE_N_SHAKE + int(self.pos[1:])),
-#             # CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME_POINT_2)
-#         ]
+'''class CMD_FRY_PLACE_N_SHAKE(CommandBase):
+    def obtain_commands(self):
+        return [
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_FRY_PLACE_N_SHAKE + int(self.pos[1:])),
+            # CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME_POINT_2)
+        ]
     
-#     def done(self):
-#         if STATUS_ROBOT["holding"] != "nothing":
-#             STATUS_POS[self.pos] = STATUS_ROBOT["holding"]
-#             STATUS_ROBOT["holding"] = "nothing"
-#             STATUS_FRIED_TIME[self.pos] = get_frying_time(STATUS_POS[self.pos])
+    def done(self):
+        if STATUS_ROBOT["holding"] != "nothing":
+            STATUS_POS[self.pos] = STATUS_ROBOT["holding"]
+            STATUS_ROBOT["holding"] = "nothing"
+            STATUS_FRIED_TIME[self.pos] = get_frying_time(STATUS_POS[self.pos])
 
-# class CMD_WAITING_TO_READY(CommandBase):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.ready_place = CMD_READY_PLACE()
+class CMD_WAITING_TO_READY(CommandBase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ready_place = CMD_READY_PLACE()
 
-#     def get_motion_time(self):
-#         return self.motion_time + self.ready_place.get_motion_time()
+    def get_motion_time(self):
+        return self.motion_time + self.ready_place.get_motion_time()
 
-#     def obtain_commands(self):
-#         return [
-#             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_WAITING_PICKUP + int(self.pos[3:])),
-#             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME),
-#         ] + self.ready_place.obtain_commands()
+    def obtain_commands(self):
+        return [
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_WAITING_PICKUP + int(self.pos[3:])),
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME),
+        ] + self.ready_place.obtain_commands()
     
-#     def done(self):
-#         pass        
+    def done(self):
+        pass        
 
-# class CMD_FINISH(CommandBase):
-#     def __init__(self):
-#         name = 'fin'
-#         super().__init__(name, pos_map[name][4])
+class CMD_FINISH(CommandBase):
+    def __init__(self):
+        name = 'fin'
+        super().__init__(name, pos_map[name][4])
         
-#     def obtain_commands(self):
-#         return [
-#             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_FINISH),
-#             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME)
-#         ]
+    def obtain_commands(self):
+        return [
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_FINISH),
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME)
+        ]
     
-#     def done(self):
-#         STATUS_POS[self.pos] = STATUS_ROBOT["holding"]
-#         STATUS_ROBOT["holding"] = "nothing"
+    def done(self):
+        STATUS_POS[self.pos] = STATUS_ROBOT["holding"]
+        STATUS_ROBOT["holding"] = "nothing"'''
 '''command Base consists of'''
 # pos, motion_time, pos1
 
