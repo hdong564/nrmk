@@ -320,11 +320,14 @@ def app_ui():
                     basket_num = app_ui_client.read_holding_registers(217, 1)[0] - 1
                     if basket_num >= 0:
                         w_pos = 'w{}'.format(basket_num)                    
-                        print("메뉴취소")
-                        if len(ORDER_LIST):
-                            ORDER_LIST.remove(w_pos)
-                            STATUS_POS[w_pos] = 'nothing'
-                            COOKING_FLAG[w_pos] = ['waiting recipe',0]
+                        if COOKING_FLAG[w_pos][0] == 'waiting recipe':
+                            print("ERROR!! - No Recipe to cancel")
+                        else:
+                            print("메뉴취소")
+                            if len(ORDER_LIST):
+                                ORDER_LIST.remove(w_pos)
+                                STATUS_POS[w_pos] = 'nothing'
+                                COOKING_FLAG[w_pos] = ['waiting recipe',0]
                     app_ui_client.write_multiple_registers(217, [0])
 
                 #레시피 초기화
@@ -333,7 +336,7 @@ def app_ui():
                     if FIN_EMPTY[w_pos] == True:  #초기화 필요
                         app_ui_client.write_multiple_registers(34+i, [0])
                         FIN_EMPTY[w_pos] = False
-                        COOKING_FLAG[w_pos] = 'waiting recipe'
+                        COOKING_FLAG[w_pos] = ['waiting recipe',0]
                     
 
                 # ########################
