@@ -150,26 +150,31 @@ def app_ui():
                 for i in range(8):
                     w_pos = f'w{i}' # set wi 
                     if app_ui_client.read_holding_registers(52+i, 1)[0] == 1: # read 1 byte of holding registers
-                        if 0 < app_ui_client.read_holding_registers(34+i, 1)[0] < 11: #레시피 1~10
-                            #레시피 조리시간 확인 예외처리
-                            recipe_num = app_ui_client.read_holding_registers(34+i, 1)[0] # reading recipe status 
-                            if (RECIPE_DATA_APP[recipe_num-1][0] == 0) and (RECIPE_DATA_APP[recipe_num-1][1] == 0):
-                                print("레시피 에러 - 조리시간이 0", w_pos)
-                            else:   # if recipe sync implemented 
-                                if COOKING_FLAG[w_pos] == 'waiting recipe':
-                                    if app_ui_client.read_holding_registers(34+i, 1)[0] > 9:
-                                        # recipe 10 case -> [-2:] able
-                                        STATUS_POS[w_pos] = str(app_ui_client.read_holding_registers(34+i, 1)[0]) 
-                                    else: #recipe smaller than 10 case -> one digit decimal -> need '0' string 
-                                        STATUS_POS[w_pos] = '0' + str(app_ui_client.read_holding_registers(34+i, 1)[0])
-                                    # app_ui_client.write_multiple_registers(34+i, [0])
-                                    app_ui_client.write_multiple_registers(26+i, [1])
-                                    app_ui_client.write_multiple_registers(52+i, [0])
-                                    COOKING_FLAG[w_pos] = 'cooking...'
-                                    ORDER_LIST.append(w_pos)
-                                elif COOKING_FLAG[w_pos] == 'cooking...':
-                                    print(f"CANNOT SELECT: Already recipe on basket on (w{i}) !")
-                            # print("레시피",w_pos,STATUS_POS[w_pos])
+                        if COOKING_FLAG[w_pos][0] == 'cooking...' and COOKING_FLAG[w_pos][1] == 1:
+                            pass
+                        else:
+                            if 0 < app_ui_client.read_holding_registers(34+i, 1)[0] < 11: #레시피 1~10
+                             #레시피 조리시간 확인 예외처리
+                                recipe_num = app_ui_client.read_holding_registers(34+i, 1)[0] # reading recipe status 
+                                if (RECIPE_DATA_APP[recipe_num-1][0] == 0) and (RECIPE_DATA_APP[recipe_num-1][1] == 0):
+                                    print("레시피 에러 - 조리시간이 0", w_pos)
+                                else:   # if recipe sync implemented 
+                                    if COOKING_FLAG[w_pos][0] == 'cooking...':
+                                        COOKING_FLAG[w_pos][1] = 1
+                                        print("ERROR!! - multiple RECIPE selection")
+                                    else:    
+                                        if app_ui_client.read_holding_registers(34+i, 1)[0] > 9:
+                                            # recipe 10 case -> [-2:] able
+                                            STATUS_POS[w_pos] = str(app_ui_client.read_holding_registers(34+i, 1)[0]) 
+                                        else: #recipe smaller than 10 case -> one digit decimal -> need '0' string 
+                                            STATUS_POS[w_pos] = '0' + str(app_ui_client.read_holding_registers(34+i, 1)[0])
+                                        # app_ui_client.write_multiple_registers(34+i, [0])
+                                        app_ui_client.write_multiple_registers(26+i, [1])
+                                        app_ui_client.write_multiple_registers(52+i, [0])
+                                        COOKING_FLAG[w_pos][0] = 'cooking...'
+                                        COOKING_FLAG[w_pos][1] = 0
+                                        ORDER_LIST.append(w_pos)
+                                # print("레시피",w_pos,STATUS_POS[w_pos])
 
                 #바스켓 상태
                 # if (WAITING_POINT['w0'] == 'nothing') and ('frying' in STATUS_POS['w0']): #조리전
@@ -319,6 +324,7 @@ def app_ui():
                         if len(ORDER_LIST):
                             ORDER_LIST.remove(w_pos)
                             STATUS_POS[w_pos] = 'nothing'
+                            COOKING_FLAG[w_pos] = ['waiting recipe',0]
                     app_ui_client.write_multiple_registers(217, [0])
 
                 #레시피 초기화
