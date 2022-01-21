@@ -155,16 +155,20 @@ def app_ui():
                             recipe_num = app_ui_client.read_holding_registers(34+i, 1)[0] # reading recipe status 
                             if (RECIPE_DATA_APP[recipe_num-1][0] == 0) and (RECIPE_DATA_APP[recipe_num-1][1] == 0):
                                 print("레시피 에러 - 조리시간이 0", w_pos)
-                            else:   #recipe num of each basket goto status_pos -> repr, making recipe... 
-                                if app_ui_client.read_holding_registers(34+i, 1)[0] > 9:
-                                    # recipe 10 case -> [-2:] able
-                                    STATUS_POS[w_pos] = str(app_ui_client.read_holding_registers(34+i, 1)[0]) 
-                                else: #recipe smaller than 10 case -> one digit decimal -> need '0' string 
-                                    STATUS_POS[w_pos] = '0' + str(app_ui_client.read_holding_registers(34+i, 1)[0])
-                                # app_ui_client.write_multiple_registers(34+i, [0])
-                                app_ui_client.write_multiple_registers(26+i, [1])
-                                app_ui_client.write_multiple_registers(52+i, [0])
-                                ORDER_LIST.append(w_pos)
+                            else:   # if recipe sync implemented 
+                                if COOKING_FLAG[w_pos] == 'waiting recipe':
+                                    if app_ui_client.read_holding_registers(34+i, 1)[0] > 9:
+                                        # recipe 10 case -> [-2:] able
+                                        STATUS_POS[w_pos] = str(app_ui_client.read_holding_registers(34+i, 1)[0]) 
+                                    else: #recipe smaller than 10 case -> one digit decimal -> need '0' string 
+                                        STATUS_POS[w_pos] = '0' + str(app_ui_client.read_holding_registers(34+i, 1)[0])
+                                    # app_ui_client.write_multiple_registers(34+i, [0])
+                                    app_ui_client.write_multiple_registers(26+i, [1])
+                                    app_ui_client.write_multiple_registers(52+i, [0])
+                                    COOKING_FLAG[w_pos] = 'cooking...'
+                                    ORDER_LIST.append(w_pos)
+                                elif COOKING_FLAG[w_pos] == 'cooking...':
+                                    print(f"CANNOT SELECT: Already recipe on basket on (w{i}) !")
                             # print("레시피",w_pos,STATUS_POS[w_pos])
 
                 #바스켓 상태
@@ -182,6 +186,8 @@ def app_ui():
                         if (app_ui_client.read_holding_registers(26+i, 1)[0] != 3):
                             app_ui_client.write_multiple_registers(26+i, [1]) #조리 전
                     elif (WAITING_POINT[w_pos] == 'nothing') and ('fried' in STATUS_POS[w_pos]):  #조리 완료
+                        '''set flag 0 !!!!!'''
+                        COOKING_FLAG[w_pos] = "waiting recipe"
                         app_ui_client.write_multiple_registers(26+i, [2])#조리 완료                        
                         # app_ui_client.write_multiple_registers(34+i, [0]) #바스켓 레시피 초기화 신호
                 
@@ -321,6 +327,8 @@ def app_ui():
                     if FIN_EMPTY[w_pos] == True:  #초기화 필요
                         app_ui_client.write_multiple_registers(34+i, [0])
                         FIN_EMPTY[w_pos] = False
+                        COOKING_FLAG[w_pos] = 'waiting recipe'
+                    
 
                 # ########################
                 # print('#################################')
