@@ -151,7 +151,7 @@ def app_ui():
                     w_pos = f'w{i}' # set wi 
                     if app_ui_client.read_holding_registers(52+i, 1)[0] == 1: # read 1 byte of holding registers
                         if COOKING_FLAG[w_pos][0] == 'cooking...' and COOKING_FLAG[w_pos][1] > 0:
-                            pass
+                            app_ui_client.write_multiple_registers(248,[1]) # warning popup - multiple selection        
                         else:
                             if 0 < app_ui_client.read_holding_registers(34+i, 1)[0] < 11: #레시피 1~10
                              #레시피 조리시간 확인 예외처리
@@ -162,6 +162,7 @@ def app_ui():
                                     if COOKING_FLAG[w_pos][0] == 'cooking...':
                                         COOKING_FLAG[w_pos][1] = 1
                                         print("ERROR!! - multiple RECIPE selection")
+                                        app_ui_client.write_multiple_registers(248,[1]) # warning popup - multiple selection
                                     else:    
                                         if app_ui_client.read_holding_registers(34+i, 1)[0] > 9:
                                             # recipe 10 case -> [-2:] able
@@ -323,11 +324,14 @@ def app_ui():
                         if COOKING_FLAG[w_pos][0] == 'waiting recipe':
                             print("ERROR!! - No Recipe to cancel")
                         else:
-                            print("메뉴취소")
-                            if len(ORDER_LIST):
+                            pre_order_list_len = len(ORDER_LIST)
+                            if pre_order_list_len:
                                 ORDER_LIST.remove(w_pos)
                                 STATUS_POS[w_pos] = 'nothing'
                                 COOKING_FLAG[w_pos] = ['waiting recipe',0]
+                            pos_order_list_len = len(ORDER_LIST)
+                            if pos_order_list_len < pre_order_list_len:
+                                print("Menu cancle complete!")
                     app_ui_client.write_multiple_registers(217, [0])
 
                 #레시피 초기화
