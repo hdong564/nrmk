@@ -150,7 +150,7 @@ def app_ui():
                 for i in range(8):
                     w_pos = f'w{i}' # set wi 
                     if app_ui_client.read_holding_registers(52+i, 1)[0] == 1: # read 1 byte of holding registers
-                        if COOKING_FLAG[w_pos][0] == 'cooking...' and COOKING_FLAG[w_pos][1] == 1:
+                        if COOKING_FLAG[w_pos][0] == 'cooking...' and COOKING_FLAG[w_pos][1] > 0:
                             pass
                         else:
                             if 0 < app_ui_client.read_holding_registers(34+i, 1)[0] < 11: #레시피 1~10
