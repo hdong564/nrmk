@@ -11,6 +11,7 @@ FRY_NUM = 4 #fryer구 개수
 # FRY_WAIT_NUM = 2 #대기공간 개수
 
 WAIT_NUM = 8 #waintpoint 개수
+BASKET_NUM = 8
 
 ORDER_LIST = []
 
@@ -41,6 +42,9 @@ POS_DATA = [
 ]
 
 EARLY_FIN= {'f0' : False, 'f1' : False, 'f2' : False, 'f3' : False}
+
+'''handling already cooking basket'''
+COOKING_FLAG = dict([('w{}'.format(i), False) for i in range(BASKET_NUM)])
 
 # 메뉴 : 치킨, 감자, 순살
 
