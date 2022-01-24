@@ -400,4 +400,36 @@ class CommandJob():
         return self.current_job
 
 class cmd_creation(Recipe,CommandJob):
-    def __init(self, Recipe_array)
+    def __init(self, recipe,w_pos,f_pos,status):
+        self.status = status
+        self.w_pos = w_pos
+        self.f_pos = f_pos
+        self.recipe = recipe
+        self.menu = recipe.get_menu()
+    
+    def init_cmds(self):
+        cmd = CommandJob()
+        cmd.clear_commands()
+        return cmd
+
+    def create_cmds(self, cmd: CommandJob,w_pos,f_pos,status) -> CommandJob: 
+        '''handle exception on recipe_logic.py'''
+        # get CJ type, return CJ
+        if self.menu == 1: # main menu - chicken
+            cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))
+            if not self.recipe.immediate_shake or self.recipe.no_shaking():
+                cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos,10))
+            else:
+                cmd.add_cmd(CMD_FRY_PLACE(f_pos,10))
+            cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos,time = get_frying_time(status)))
+            cmd.add_cmd(CMD_CHANGE_STATUS(f_pos,status))
+            cmd.set_cooking_pos(f_pos)
+            PREV_POS_DATA[f_pos] = w_pos
+            return cmd
+        elif self.menu == 2: # side menu - fried potato
+            
+            
+            
+            pass
+        elif self.menu == 3:
+            pass
