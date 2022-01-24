@@ -156,374 +156,56 @@ def next_work():
         recipe = Recipe(RECIPE_DATA_APP[recipe_num-1])
         menu = recipe.get_menu()
         #################ZONE별로 다른 프라이에##############set1
-        if (w_pos == 'w0') or (w_pos == 'w2'): # todo[1].append
-            f_pos = 'f0'
-            print("using fry 1") ##debug용
-            if (0 < recipe_num < 11) and (STATUS_POS[f_pos] == 'nothing') and (WAITING_POINT[w_pos] == 'nothing'): #wait에 음식 ---> fry에 튀기기 #위치저장
-                if recipe.no_shaking():#흔들기 없는 경우
+        if (0 < recipe_num < 11) and (STATUS_POS[f_pos] == 'nothing') and (WAITING_POINT[w_pos] == 'nothing'):
+            '''
+            1. f_pos selection
+            '''
+            if (w_pos == 'w0') or (w_pos == 'w2'): # todo[1].append
+                f_pos = 'f0'
+                print("using fry 1") ##debug용
+            elif (w_pos == 'w1') or (w_pos == 'w3'):# todo[1].append
+                f_pos = 'f1'
+                print("using fry 2") ##debug용
+            elif (w_pos == 'w4') or (w_pos == 'w6'):
+                f_pos = 'f2'
+                print("using fry 3") ##debug용
+            elif (w_pos == 'w5') or (w_pos == 'w7'):
+                f_pos = 'f3'
+                print("using fry 4") ##debug용
+            print("Fry start pos->", f_pos,w_pos) #test
+
+            '''
+            2. status selection
+            '''
+            if recipe.no_shake:#흔들기 없는 경우
                     status = "shaked3_" + STATUS_POS[w_pos]
-                    cmd = CommandJob()
-                    cmd.clear_commands()
-                    cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                    cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                    cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                    cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                    cmd.set_cooking_pos(f_pos)
-                    PREV_POS_DATA[f_pos] = w_pos
-
-                elif recipe.is_shake1:#흔들기 1회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked3_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                
-                elif recipe.is_shake2:#흔들기 2회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked2_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                
-                elif recipe.is_shake3:#흔들기 3회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                    
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                print("Fry start pos->", f_pos,w_pos) #test
-                del ORDER_LIST[0]
-                todo[1].append(cmd)
-
-            else:
-                del ORDER_LIST[0]
-                ORDER_LIST.append(w_pos)        
-
-        elif (w_pos == 'w1') or (w_pos == 'w3'):# todo[1].append
-            f_pos = 'f1'
-            print("using fry 2") ##debug용
-            if (0 < recipe_num < 11) and (STATUS_POS[f_pos] == 'nothing') and (WAITING_POINT[w_pos] == 'nothing'): #wait에 음식 ---> fry에 튀기기 #위치저장
-                if (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 0):#흔들기 없는 경우
+            elif recipe.is_shake1:#흔들기 1회
+                if recipe.immediate_shake:#흔들기 1회 바로하는 경우
                     status = "shaked3_" + STATUS_POS[w_pos]
-                    cmd = CommandJob()
-                    cmd.clear_commands()
-                    cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                    cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                    cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                    cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                    cmd.set_cooking_pos(f_pos)
-                    PREV_POS_DATA[f_pos] = w_pos
+                else: #흔들기 1회 나중에 하는 경우
+                    status = "notshaked1_" + STATUS_POS[w_pos]
+            elif recipe.is_shake2:#흔들기 2회
+                if recipe.immediate_shake:#흔들기 1회 바로하는 경우
+                    status = "shaked2_" + STATUS_POS[w_pos]
+                else: #흔들기 1회 나중에 하는 경우
+                    status = "notshaked1_" + STATUS_POS[w_pos] 
+            elif recipe.is_shake3:#흔들기 3회
+                if recipe.immediate_shake:#흔들기 1회 바로하는 경우
+                    status = "shaked1_" + STATUS_POS[w_pos]
+                else: #흔들기 1회 나중에 하는 경우
+                    status = "notshaked1_" + STATUS_POS[w_pos]
+            
+            '''
+            3. create cmds using (w_pos, f_pos, status)
+            '''
+            cmd = cmd_creation.init_cmds() # init cmd list 
+            cmd = cmd_creation.create_cmds(cmd,w_pos = w_pos,f_pos = f_pos, status = status) # append cmds
 
-                elif (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 1):#흔들기 1회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked3_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                
-                elif (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 2):#흔들기 2회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked2_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                
-                elif (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 3):#흔들기 3회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                    
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                print("Fry start pos->", f_pos,w_pos) #test
-                del ORDER_LIST[0]                   
-                todo[1].append(cmd)
-
-            else:
-                del ORDER_LIST[0]
-                ORDER_LIST.append(w_pos) 
-            ###################################set2
-        elif (w_pos == 'w4') or (w_pos == 'w6'):
-            f_pos = 'f2'
-            print("using fry 3") ##debug용
-            if (0 < recipe_num < 11) and (STATUS_POS[f_pos] == 'nothing') and (WAITING_POINT[w_pos] == 'nothing'): #wait에 음식 ---> fry에 튀기기 #위치저장
-                if (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 0):#흔들기 없는 경우
-                    status = "shaked3_" + STATUS_POS[w_pos]
-                    cmd = CommandJob()
-                    cmd.clear_commands()
-                    cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                    cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                    cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                    cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                    cmd.set_cooking_pos(f_pos)
-                    PREV_POS_DATA[f_pos] = w_pos
-
-                elif (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 1):#흔들기 1회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked3_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                
-                elif (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 2):#흔들기 2회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked2_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                
-                elif (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 3):#흔들기 3회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                    
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                print("Fry start pos->", f_pos,w_pos) #test
-                del ORDER_LIST[0]                   
-                todo[1].append(cmd)
-
-            else:
-                del ORDER_LIST[0]
-                ORDER_LIST.append(w_pos)         
-
-        elif (w_pos == 'w5') or (w_pos == 'w7'):
-            f_pos = 'f3'
-            print("using fry 4") ##debug용
-            if (0 < recipe_num < 11) and (STATUS_POS[f_pos] == 'nothing') and (WAITING_POINT[w_pos] == 'nothing'): #wait에 음식 ---> fry에 튀기기 #위치저장
-                if (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 0):#흔들기 없는 경우
-                    status = "shaked3_" + STATUS_POS[w_pos]
-                    cmd = CommandJob()
-                    cmd.clear_commands()
-                    cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                    cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                    cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                    cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                    cmd.set_cooking_pos(f_pos)
-                    PREV_POS_DATA[f_pos] = w_pos
-
-                elif (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 1):#흔들기 1회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked3_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                
-                elif (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 2):#흔들기 2회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked2_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                
-                elif (RECIPE_DATA_APP[recipe_num-1][2] + RECIPE_DATA_APP[recipe_num-1][6] + RECIPE_DATA_APP[recipe_num-1][10] == 3):#흔들기 3회
-                    if (RECIPE_DATA_APP[recipe_num-1][4] == 0) and (RECIPE_DATA_APP[recipe_num-1][5] == 0):#흔들기 1회 바로하는 경우
-                        status = "shaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-                    
-                    else: #흔들기 1회 나중에 하는 경우
-                        status = "notshaked1_" + STATUS_POS[w_pos]
-                        cmd = CommandJob()
-                        cmd.clear_commands()
-                        cmd.add_cmd(CMD_WAIT_PICKUP(w_pos, 10))
-                        cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos, 10))
-                        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time=get_frying_time(status)))
-                        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
-                        cmd.set_cooking_pos(f_pos)
-                        PREV_POS_DATA[f_pos] = w_pos
-
-                print("Fry start pos->", f_pos,w_pos) #test
-                del ORDER_LIST[0]                   
-                todo[1].append(cmd)
-
-            else:
-                del ORDER_LIST[0]
-                ORDER_LIST.append(w_pos)                    
-
+            del ORDER_LIST[0]
+            todo[1].append(cmd)                   
+        else:
+            del ORDER_LIST[0]
+            ORDER_LIST.append(w_pos)       
     # 다음 작업 결정 
     #print(todo) for debugging
     if todo[0]:
