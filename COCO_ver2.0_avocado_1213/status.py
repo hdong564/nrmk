@@ -212,14 +212,10 @@ class Recipe:
         self.is_main  = Recipe_Array[19] # Chicken or something
         self.is_side  = Recipe_Array[20] # Fried potato or something
         self.is_drink = Recipe_Array[21] # Beer!
-        self.later_shake = ((Recipe_Array[4] == 0) and (Recipe_Array[5] == 0))
+        self.immediate_shake = ((Recipe_Array[4] == 0) and (Recipe_Array[5] == 0))
+        self.no_shake = not self.is_shake1 and not self.is_shake2 and not self.is_shake3
     # def TransToSec(min,sec):
     #     return 60*min + sec
-    def no_shaking(self):
-        if not self.is_shake1 and not self.is_shake2 and not self.is_shake3:
-            return 1
-        else: 
-            return 0
     def get_menu(self):
         if self.is_main:
             return 1
