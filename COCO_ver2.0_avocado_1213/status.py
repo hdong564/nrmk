@@ -212,6 +212,7 @@ class Recipe:
         self.is_main  = Recipe_Array[19] # Chicken or something
         self.is_side  = Recipe_Array[20] # Fried potato or something
         self.is_drink = Recipe_Array[21] # Beer!
+        self.later_shake = ((Recipe_Array[4] == 0) and (Recipe_Array[5] == 0))
     # def TransToSec(min,sec):
     #     return 60*min + sec
     def no_shaking(self):
@@ -226,7 +227,14 @@ class Recipe:
             return 2
         elif self.is_drink:
             return 3
-
+    
+    def get_shakeNum(self):
+        if self.is_shake1:
+            return 1
+        elif self.is_shake2:
+            return 2
+        elif self.is_shake3:
+            return 3
 
     def intervals_shake1(self):
         result = []

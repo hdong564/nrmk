@@ -32,14 +32,13 @@ COMMAND_LIMB_FRY_SHAKE              = 150
 COMMAND_LIMB_WAIT_CMD               = 3 
 
 '''commands for Fried 'Potato' '''
-COMMAND_LIMB_POTATO_PICKUP = 200
-COMMAND_LIMB_POTATO_PLACE_MACHINE = 210
-COMMAND_LIMB_POTATO_WAIT_POTATOS = 220
-COMMAND_LIMB_POTATO_PLACE_FRY = 230
+#COMMAND_LIMB_POTATO_PICKUP = 200
+COMMAND_LIMB_POTATO_PLACE_MACHINE = 200
+COMMAND_LIMB_POTATO_WAIT_POTATOS = 210
+COMMAND_LIMB_POTATO_PLACE_FRY = 220
 
 
-'''All consts abovve are B variables'''
-
+'''All consts abovve are B variables'''  
 
 class CommandParam():
     def __init__(self, cmd_type: str, params):
@@ -358,14 +357,13 @@ class CMD_WAIT_CMD(CommandBase):
         ]
 
 class CommandJob():
-    def __init__(self):
+    def __init__(self, Recipe_Array):
         self.current_job = None
         self.current_job_idx = -1
         self.cmds = []
         self.cooking_pos = None
         self.recipe_time = None
         self.prev_waiting_point = None
-
     def add_cmd(self, cmd: CommandBase):
         self.cmds.append(cmd)
         return self
@@ -400,3 +398,6 @@ class CommandJob():
     
     def get_current_job(self):
         return self.current_job
+
+class cmd_creation(Recipe,CommandJob):
+    def __init(self, Recipe_array)
