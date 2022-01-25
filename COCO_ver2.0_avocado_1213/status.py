@@ -210,19 +210,23 @@ class Recipe:
         self.until_shake2 = TransToSec(Recipe_Array[8],Recipe_Array[9]) 
         self.until_shake3 = TransToSec(Recipe_Array[12], Recipe_Array[13])
         self.is_main  = Recipe_Array[19] # Chicken or something
-        self.is_side  = Recipe_Array[20] # Fried potato or something
+        self.is_side  = Recipe_Array[20] # Fried potato amount: 1,2,3 for  S/M/L
         self.is_drink = Recipe_Array[21] # Beer!
         self.immediate_shake = ((Recipe_Array[4] == 0) and (Recipe_Array[5] == 0))
         self.no_shake = not self.is_shake1 and not self.is_shake2 and not self.is_shake3
     # def TransToSec(min,sec):
     #     return 60*min + sec
     def get_menu(self):
+        '''menu: 1 -> chicken
+           menu: 2,3,4 -> S/M/L size fried potato
+           menu: 5 -> beer
+        '''
         if self.is_main:
             return 1
         elif self.is_side:
-            return 2
+            return self.is_side + 1
         elif self.is_drink:
-            return 3
+            return 
     
     def get_shakeNum(self):
         if self.is_shake1:

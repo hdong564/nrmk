@@ -202,7 +202,7 @@ def next_work():
             cmd = cmd_creation.create_cmds(cmd,w_pos = w_pos,f_pos = f_pos, status = status) # append cmds
 
             del ORDER_LIST[0]
-            todo[1].append(cmd)                   
+            todo[1].append(cmd)
         else:
             del ORDER_LIST[0]
             ORDER_LIST.append(w_pos)       
@@ -218,7 +218,7 @@ def next_work():
 
     elif todo[2]:
         for work in todo[2]:
-            return work 
+            return work
 
     elif (todo[0] == []) and (todo[1] == []) and (todo[2] == []):
         cmd = CommandJob()

@@ -4,7 +4,7 @@
 # from dash.dependencies import Input, Output
 
 from indy.commander import *
-
+from indy import indy_utils
 # from App import app
 # from Buttons import *
 
@@ -32,7 +32,6 @@ if __name__ == '__main__':
 # init start
 # gotta find not run timing 
     GLOBAL_FLAG['run'] = True
-
     thread_list = []
     th0 = threading.Thread(target=app_ui) # run app_ui in thread 
     th0.start()
