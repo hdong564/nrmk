@@ -7,7 +7,7 @@ from indy.commander import *
 from indy.indy_utils.indydcp_client import IndyDCPClient
 from indy.indy_utils.indy_shm import IndyShmCommand
 
-from indy.logic.chicken_logic import *
+from indy.logic.recipe_logic import *
 from indy.logic.commands import *
 
 # indy_master = IndyShmCommand()

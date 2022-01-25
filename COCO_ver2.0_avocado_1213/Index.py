@@ -4,13 +4,15 @@
 # from dash.dependencies import Input, Output
 
 from indy.commander import *
-from indy import indy_utils
+from indy.indy_utils import indy_shm
 # from App import app
 # from Buttons import *
-
 from status import *
-
 from UI import *
+
+import sys
+sys.path.append('absolute path')
+import indy_shm
 
 def sig_handler(signum, frame):
     print('SIGNAL RECEIVED:', signum)

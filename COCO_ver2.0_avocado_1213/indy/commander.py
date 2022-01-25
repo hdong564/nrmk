@@ -4,7 +4,7 @@ if not GLOBAL_FLAG['test_mode']:
     from indy.indy_utils.indydcp_client import IndyDCPClient
     from indy.indy_utils.indy_shm import IndyShmCommand
     #from indy import LinearMotor as lm #no use
-from indy.logic.chicken_logic import next_work
+from indy.logic.recipe_logic import next_work
 from indy.logic.commands import *
 
 import json
