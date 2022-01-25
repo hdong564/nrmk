@@ -276,7 +276,7 @@ class CMD_WAIT_CMD(CommandBase):
         ]
 
 class CommandJob():
-    def __init__(self, Recipe_Array):
+    def __init__(self):
         self.current_job = None
         self.current_job_idx = -1
         self.cmds = []
