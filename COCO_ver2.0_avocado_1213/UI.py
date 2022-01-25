@@ -406,7 +406,7 @@ def app_recipe_ui():
                         # copy data first!
                     recipe = Recipe(RECIPE_DATA_APP[i])
                     #if recipe.menu_main() | recipe.menu_side():
-                    if recipe.no_shaking():
+                    if recipe.no_shake:
                         RECIPE_DATA_APP[i][18] = recipe.total_time
                     elif recipe.is_shake1:
                         RECIPE_DATA_APP[i][15] = recipe.intervals_shake1()[0]
