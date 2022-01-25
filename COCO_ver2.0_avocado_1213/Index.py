@@ -10,10 +10,6 @@ from indy.indy_utils import indy_shm
 from status import *
 from UI import *
 
-import sys
-sys.path.append('absolute path')
-import indy_shm
-
 def sig_handler(signum, frame):
     print('SIGNAL RECEIVED:', signum)
     GLOBAL_FLAG['run'] = False
