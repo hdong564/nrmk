@@ -139,7 +139,7 @@ def next_work():
         # print(WAITING_POINT(ORDER_LIST[0]))
         print("##################################################")
         w_pos = ORDER_LIST[0]    #포토센서 보고 작업하기 WAITING_POINT  #commander에서 유무 판단
-        WAITING_POINT['w0'] = 'empty' ###Test web
+        # WAITING_POINT['w0'] = 'empty' ###Test web
         # WAITING_POINT['w1'] = 'empty'
         # WAITING_POINT['w2'] = 'empty' ###Test web
         # WAITING_POINT['w3'] = 'empty'
@@ -172,6 +172,7 @@ def next_work():
             elif (w_pos == 'w5') or (w_pos == 'w7'):
                 f_pos = 'f3'
                 print("using fry 4") ##debug용
+                
             print("Fry start pos->", f_pos,w_pos) #test
 
             '''

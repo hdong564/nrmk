@@ -1,5 +1,5 @@
 from time import time, sleep
-import copy
+#import copy
 
 CB_IP = "192.168.0.46"
 

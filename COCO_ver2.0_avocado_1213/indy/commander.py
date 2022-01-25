@@ -85,7 +85,7 @@ def set_job(job):
                 print("CMD COOKING_TIME", cmds.pos, prev_time, "->", f"{time} ({cmd.params})")
                 STATUS_FRIED_TIME[cmds.pos] = time
 
-            else:
+            else: # cmd type: COMMAND_TYPE_LIMB
                 print("CMD LIMB", cmd.params)
                 if not GLOBAL_FLAG['test_mode']:
                     indy_master.write_direct_variable(0, COMMANDER_ADDR, cmd.params)
@@ -271,32 +271,7 @@ def rt_status_update():
                     for i in range(WAIT_NUM):
                         STATUS_POS['w{}'.format(i)] = 'nothing'
                     STATUS_ROBOT["holding"] = 'nothing'
-
-                # # 직접교시 UI On/Off
-                # robot_status = indy_master.get_robot_status()
-                # if (ui_request & UI_REQUEST_DT):
-                #     if robot_status['direct_teaching']:
-                #         indy_master.direct_teaching(False)
-                #         STATUS_ROBOT["direct_teaching"] = False
-                #     else:
-                #         indy_master.direct_teaching(True)
-                #         STATUS_ROBOT["direct_teaching"] = True
-                #     STATUS_ROBOT["ui_request"] ^= UI_REQUEST_DT
-            else:
-                # Stop 해제시 직접교시 켜져 있으면 끄기    
-                # if ui_request & UI_REQUEST_DT:
-                #     STATUS_ROBOT['ui_request'] ^= UI_REQUEST_DT
-                
-                # robot_status = indy_master.get_robot_status()
-                # if robot_status['direct_teaching']:
-                #     indy_master.direct_teaching(False)
-                #     STATUS_ROBOT["direct_teaching"] = False
-                    
-                # if prog_state == 'stop':
-                #     indy_master.start_default_program()
-                #     CONTY_PROGRAM_IS_RUNNING = True
-                #     STATUS_ROBOT["system"] = 'ready'
-                
+            else:   
                 # 일시정지 / 계속 진행
                 if SAFETY_PROGRAM_STOP_TICK == 0:
                     if not (ui_request & UI_REQUEST_PAUSE):

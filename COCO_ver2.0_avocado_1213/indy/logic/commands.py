@@ -1,4 +1,3 @@
-from tkinter import Menu
 from status import *
 
 COMMAND_TYPE_LIMB = "limb" # robot hand
@@ -181,7 +180,7 @@ class CMD_WAIT_PICKUP(CommandBase):
     def done(self):
         STATUS_ROBOT["holding"] = STATUS_POS[self.pos]
         STATUS_POS[self.pos] = "nothing"
-        
+          
 class CMD_FRY_PLACE(CommandBase):    
     def obtain_commands(self):
         r_n = int(STATUS_POS[self.pos][-2:])
@@ -326,15 +325,16 @@ class cmd_creation(Recipe,CommandJob):
         self.recipe = recipe
         self.menu = recipe.get_menu()
     
-    def init_cmds(self):
+    def init_cmds():
         cmd = CommandJob()
         cmd.clear_commands()
         return cmd
 
-    def create_cmds(self, cmd: CommandJob,w_pos,f_pos,status) -> CommandJob: 
+    def create_cmds(self,cmd,w_pos,f_pos,status): 
         '''handle exception on recipe_logic.py'''
         # get CJ type, return CJ
         if self.menu == 1: # main menu - chicken
+            print("menu: Chicken")
             cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))
             if not self.recipe.immediate_shake or self.recipe.no_shaking():
                 cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos,10))
@@ -346,7 +346,7 @@ class cmd_creation(Recipe,CommandJob):
             PREV_POS_DATA[f_pos] = w_pos
             return cmd
         elif (2<=self.menu<=4): # side menu - fried potato
-            size = self.menu # S / M / L ( 2 / 3 / 4 )
+            size = self.menu # S / M / L ( 2 / 3 / 4 ) amount 
             cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))    # 1. pickup potato basket
             cmd.add_cmd(CMD_POTATO_PLACE_MACHINE())   # 2. place basket to machine 
             cmd.add_cmd(CMD_POTATO_GET_WAIT())        # 3. set DO = 1 -> get FP and wait  
@@ -355,6 +355,6 @@ class cmd_creation(Recipe,CommandJob):
             cmd.add_cmd(CMD_CHANGE_STATUS(f_pos,status))
             cmd.set_cooking_pos(f_pos)
             PREV_POS_DATA[f_pos] = w_pos
-            cmd
         elif self.menu == 5: # for beer 
-            pass
+            return 1
+    
