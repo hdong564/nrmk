@@ -1,6 +1,4 @@
-
-
-from indy.logic.commands import *
+from command import *
 from status import *
 from recipe_module import *
 # todo = {}
@@ -33,9 +31,19 @@ def tmp(w_pos):
     STATUS_POS[w_pos] = '09'
     ORDER_LIST.append(w_pos)
 
+
 STATUS_POS['f1'] = '09'
 i = 7
 tmp('w{}'.format(i))
+WAITING_POINT['w{}'.format(i)] = 'nothing'
+RECIPE_DATA_APP[8] = [1]*22
+recipe_array = RECIPE_DATA_APP[7] 
+for i in range(10):
+    print(RECIPE_DATA_APP[i])
+
+
+print("Waiting point:", WAITING_POINT)
+
 print("Order list : ",ORDER_LIST)
 print("Status pos: ",STATUS_POS)
 print("usable status pos: ",STATUS_POS_USABLE)

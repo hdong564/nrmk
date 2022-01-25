@@ -38,24 +38,59 @@ class next_work():
 
     def FposLogic(self,recipe,f_pos):
         print("Fpos logic processing...")
-        recipeArray = recipe[0]
-        recipeNum = recipe[1]
-        #print(recipeArray.array, recipeNum)
+        
+        
 
 
     def WposLogic(self,recipe,w_pos):
-        print("Wpos logic processing...")
-        print("Wpos logic Done!")
+        print("     Wpos logic processing...")
+        print("    ",recipe.array)
+        menu = recipe.get_menu()
+        print("     menu: ",menu)
         check_count = 0
         for i in range(6):
             if (2<= i <= 3):
                 continue
             if w_pos == 'w{}'.format(i) or w_pos == 'w{}'.format(i+2):
-                print("checking: ",'w{}'.format(i),'w{}'.format(i+2))
+                print("     checking: ",'w{}'.format(i),'w{}'.format(i+2))
                 f_pos = 'f{}'.format(check_count)
-                print(f_pos)
+                print("     ",f_pos)
             check_count +=1
-        print("W_pos, f_pos chekcking.. done!", w_pos,f_pos)
+        print("     W_pos, f_pos chekcking.. done!", w_pos,f_pos)
+    
+        # error handling #
+        if STATUS_POS[f_pos] != 'nothing' or WAITING_POINT[w_pos] != 'nothing':
+            print("     ERROR! - please remove fry basket")
+            del ORDER_LIST[0]
+            ORDER_LIST.append(w_pos)
+            # return ?? 
+        
+        # status selection #
+        else:
+            if recipe.no_shake:
+                    status = "shaked3_" + STATUS_POS[w_pos]
+            elif recipe.is_shake1:#
+                if recipe.immediate_shake:
+                    status = "shaked3_" + STATUS_POS[w_pos]
+                else:
+                    status = "notshaked1_" + STATUS_POS[w_pos]
+            elif recipe.is_shake2:
+                if recipe.immediate_shake:
+                    status = "shaked2_" + STATUS_POS[w_pos]
+                else: 
+                    status = "notshaked1_" + STATUS_POS[w_pos] 
+            elif recipe.is_shake3:
+                if recipe.immediate_shake:
+                    status = "shaked1_" + STATUS_POS[w_pos]
+                else: 
+                    status = "notshaked1_" + STATUS_POS[w_pos]
+            # cmd creation # 
+            # cmd = cmd_creation.init_cmds()
+            # cmd = cmd_creation.create_cmds(cmd,w_pos = w_pos, f_pos = f_pos, status = status)
+
+            # del ORDER_LIST[0]
+            # self.todo[1].append(cmd)
+        print("######## Wpos logic Done! #########")
 
 
     def MainLogic(self):
@@ -65,7 +100,7 @@ class next_work():
             print("checking f_pos ... ",f_pos)
             if status_f_pos != 'nothing':
                 print("Fpos logic Start!")
-                recipe = self.GetRecipe(status_f_pos)
+                recipe = self.GetRecipe(status_f_pos)[0]
                 self.FposLogic(recipe,f_pos)    
             else:
                 continue
@@ -75,7 +110,8 @@ class next_work():
             status_w_pos = STATUS_POS[w_pos]
             print("checking w_pos...")
             if status_w_pos != 'nothing':
-                print("Wpos logic Start!")
+                print(status_w_pos)
+                print("######### Wpos logic Start! #########")
                 recipe = self.GetRecipe(status_w_pos)[0]
                 self.WposLogic(recipe,w_pos)
 
