@@ -53,7 +53,13 @@ EARLY_FIN= {'f0' : False, 'f1' : False, 'f2' : False, 'f3' : False}
 COOKING_FLAG = dict([('w{}'.format(i), ['waiting recipe',0]) for i in range(BASKET_NUM)])
 
 DO_POTATO_EXTRACTION = 10 #Smart DO address
-POTATO_SIZE = dict([('w{}'.format(i), 0) for i in range(BASKET_NUM)])
+POTATO_SIZE = []
+POTATO_EXTRACTION_TIMES = []
+
+#extract time according to size of potato
+EXTRACTION_TIME_S = 5
+EXTRACTION_TIME_M = 8
+EXTRACTION_TIME_L = 11 
 
 # 메뉴 : 치킨, 감자, 순살
 

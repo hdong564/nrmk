@@ -1,5 +1,5 @@
 #from this import d
-from numpy import void
+#from numpy import void
 from setuptools import Command
 from status import *
 
@@ -268,14 +268,21 @@ class CMD_POTATO_GET_WAIT(CommandBase):
         self.w_pos = w_pos
         self.size = size
     def start(self):
-        POTATO_SIZE[self.w_pos] = self.size 
-        
+        def cal_extraction_time(size):
+            return (3*size -1)
+        POTATO_SIZE.append(self.size)
+        POTATO_EXTRACTION_TIMES.append(cal_extraction_time(self.size))
+
     def obtain_commands(self):
-        return [
-            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_POTATO_GET_WAIT + int(self.pos[1:]))
-        ]
+        for i in range(2,5):
+            if POTATO_SIZE[0] == i:
+                return [CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_POTATO_GET_WAIT+i-2)]
+        # 210 -> S size
+        # 211 -> M size
+        # 212 -> L size
     def done(self):
-        POTATO_SIZE[self.w_pos] = 0
+        del POTATO_SIZE[0]
+        del POTATO_EXTRACTION_TIMES[0]
         
 
 
@@ -377,7 +384,7 @@ def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
             print("menu: Fried Potato")
             cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))
             cmd.add_cmd(CMD_POTATO_PLACE_MACHINE(w_pos,10))
-            cmd.add_cmd(CMD_POTATO_GET_WAIT(w_pos,10)) # 
+            cmd.add_cmd(CMD_POTATO_GET_WAIT(w_pos,menu)) # 
             cmd.add_cmd(CMD_POTATO_PICKUP(w_pos,10)) # comeback to wait pickup place
             if not recipe.immediate_shake or recipe.no_shaking():
                 cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos,10))
