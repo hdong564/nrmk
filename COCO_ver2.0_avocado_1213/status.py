@@ -7,6 +7,8 @@ GLOBAL_FLAG = {'run': False, 'test_mode': False, 'isChanged': False, 'menu_end1'
 
 CHECK_FLAG = {'menu_check1':False, 'menu_check2':False, 'menu_check3':False, 'menu_check4':False, 'menu_check5':False, 'menu_check6':False, 'menu_check7':False, 'menu_check8':False }
 
+
+SHAKING_NUM = 3
 FRY_NUM = 4 #fryer구 개수
 # FRY_WAIT_NUM = 2 #대기공간 개수
 
