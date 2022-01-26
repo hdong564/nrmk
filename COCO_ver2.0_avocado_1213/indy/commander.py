@@ -100,7 +100,7 @@ def set_job(job):
                     sleep(1)
     
         cmds.done()    
-
+                
 def safety_thread():
     global SAFETY_PROGRAM_STOP_TICK, robot_connected, is_robot_initializing
     wait_for_initializing()

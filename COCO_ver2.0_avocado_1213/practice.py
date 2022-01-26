@@ -38,15 +38,23 @@ tmp('w{}'.format(i))
 WAITING_POINT['w{}'.format(i)] = 'nothing'
 RECIPE_DATA_APP[8] = [1]*22
 recipe_array = RECIPE_DATA_APP[7] 
-for i in range(10):
-    print(RECIPE_DATA_APP[i])
+# for i in range(10):
+#     print(RECIPE_DATA_APP[i])
 
 
-print("Waiting point:", WAITING_POINT)
+# print("Waiting point:", WAITING_POINT)
 
-print("Order list : ",ORDER_LIST)
-print("Status pos: ",STATUS_POS)
-print("usable status pos: ",STATUS_POS_USABLE)
-work = next_work("test work")
+# print("Order list : ",ORDER_LIST)
+# print("Status pos: ",STATUS_POS)
+# print("usable status pos: ",STATUS_POS_USABLE)
+# work = next_work("test work")
 
-print(work.GetWork())
+# print(work.GetWork())
+
+cmds = CommandJob()
+cmds.clear_commands()
+cmds.add_cmd(CMD_FRY_PICKUP('w0',10))
+
+cmd = cmds.get_next_job()
+cmd.start()
+print(cmds.current_job.__repr__())
