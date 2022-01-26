@@ -5,7 +5,7 @@ from telnetlib import STATUS
 from time import time
 from time import sleep
 from unittest import case
-from indy.logic.commands import *
+from command import *
 from status import *
 
 class next_work():
@@ -39,15 +39,16 @@ class next_work():
 
     def FposLogic(self,recipe_structure,f_pos):
         '''Logic for fry pos'''
+
         print("Fpos logic processing...", f_pos)
         recipe = recipe_structure[0]
         recipe_num = recipe_structure[1]
         status_f_pos = STATUS_POS[f_pos]
+        c_pos = FRY_POS # we are in fry-pos
         if 'fried' in status_f_pos:
             if (STATUS_FRIED_TIME_UI[f_pos] > recipe.total_time) or EARLY_FIN[f_pos] == True:
                 ''' gotta update'''
-                cmd = cmd_creation.init_cmds()  
-                cmd = cmd_creation.create_cmds()
+                cmd = CmdCreation()
                 self.todo[0].append(cmd)
 
         for i in range(1,SHAKING_NUM+1):
@@ -56,9 +57,13 @@ class next_work():
                     if recipe.get_shakeNum() == j:
                         status = "shaked{}".format(SHAKING_NUM-j+1) + status_f_pos.replace("waitshaking{}_".format(i),"")
                         break
-        cmd = cmd_creation.init_cmds()
-        cmd = cmd_creation.create_cmds(cmd,None,f_pos,status)
+        
+        cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
         self.todo[2].append(cmd)
+        # cmd = cmd_creation.init_cmds()
+        # cmd = cmd_creation.create_cmds(cmd,None,f_pos,status)
+        # self.todo[2].append(cmd)
+
         print("********* Fpos logic Done! **********")
 
     def WposLogic(self,recipe_structure,w_pos):
@@ -69,6 +74,7 @@ class next_work():
         print(recipe.array)
         menu = recipe.get_menu()
         print("menu: ",menu)
+        c_pos = BASKSET_POS
         check_count = 0
         for i in range(6):
             if (2<= i <= 3):
@@ -109,9 +115,9 @@ class next_work():
             # cmd creation # 
             # cmd = cmd_creation.init_cmds()
             # cmd = cmd_creation.create_cmds(cmd,w_pos = w_pos, f_pos = f_pos, status = status)
-
-            # del ORDER_LIST[0]
-            # self.todo[1].append(cmd)
+            cmd = CmdCreation(recipe,status,w_pos,f_pos,c_pos)
+            del ORDER_LIST[0]
+            self.todo[1].append(cmd)
         print("######## Wpos logic Done! #########")
 
 
