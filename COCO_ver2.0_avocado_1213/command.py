@@ -264,14 +264,20 @@ class CMD_POTATO_PLACE_MACHINE(CommandBase):
         
 
 class CMD_POTATO_GET_WAIT(CommandBase):
+    def __init__(self,w_pos,size):
+        self.w_pos = w_pos
+        self.size = size
     def start(self):
-        pass
+        POTATO_SIZE[self.w_pos] = self.size 
+        
     def obtain_commands(self):
         return [
             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_POTATO_GET_WAIT + int(self.pos[1:]))
         ]
     def done(self):
-        pass
+        POTATO_SIZE[self.w_pos] = 0
+        
+
 
 class CMD_POTATO_PICKUP(CommandBase):
     def start(self):
