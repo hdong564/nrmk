@@ -54,7 +54,12 @@ class CommandBase():
         self.pos_code = pos_nc[pos]
         self.motion_time = motion_time
         self.pos1 = pos1
-
+# class CMD_WAIT_PLACE(CommandBase):
+#     def obtain_commands(self):
+#         return [
+#             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_WAIT_PLACE + int(self.pos[1:])),
+#             # CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME)
+#         ]
     def __repr__(self):
         return f"< cmd {self.pos} : {self.pos_code} >"
     

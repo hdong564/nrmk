@@ -10,8 +10,8 @@ CHECK_FLAG = {'menu_check1':False, 'menu_check2':False, 'menu_check3':False, 'me
 
 SHAKING_NUM = 3
 
-FRY_POS = 1
-BASKSET_POS = 0
+FRY_POS = 'Fry_Pos_Cooking'
+BASKSET_POS = 'Basket_Pos_Cooking'
 
 FRY_NUM = 4 #fryer구 개수
 # FRY_WAIT_NUM = 2 #대기공간 개수
@@ -216,9 +216,9 @@ def TransToSec(min,sec):
 # Recipe structure
 class Recipe:
     def __init__(self,Recipe_Array):
-        self.is_shake1 = Recipe_Array[2]
-        self.is_shake2 = Recipe_Array[6]
-        self.is_shake3 = Recipe_Array[10]
+        self.is_shake1 = Recipe_Array[2] + Recipe_Array[6] + Recipe_Array[10] == 1
+        self.is_shake2 = Recipe_Array[2] + Recipe_Array[6] + Recipe_Array[10] == 2
+        self.is_shake3 = Recipe_Array[2] + Recipe_Array[6] + Recipe_Array[10] == 3
         self.array = Recipe_Array
         self.total_time   = TransToSec(Recipe_Array[0], Recipe_Array[1])
         self.until_shake1 = TransToSec(Recipe_Array[4],Recipe_Array[5])
