@@ -261,7 +261,9 @@ class CMD_POTATO_PLACE_MACHINE(CommandBase):
         ]
     def done(self):
         pass
-        
+
+class test():
+    pass
 
 class CMD_POTATO_GET_WAIT(CommandBase):
     def __init__(self,w_pos,size):
