@@ -262,6 +262,7 @@ class CMD_POTATO_PLACE_MACHINE(CommandBase):
     def done(self):
         STATUS_POS[self.pos] = "potato_get"
         
+# test commit
 class CMD_POTATO_GET_WAIT(CommandBase):
     def __init__(self,w_pos,size):
         self.w_pos = w_pos
