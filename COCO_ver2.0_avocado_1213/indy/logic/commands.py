@@ -383,7 +383,8 @@ def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
         cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos))
         return cmd
     elif c_pos == BASKSET_POS:
-        if menu == 1: # chicken
+        '''menu num should be read from UI'''
+        if menu == 0: # chicken
             print(f"(menu: {menu}) basket processing ...")
             cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))
             if not recipe.immediate_shake or recipe.no_shake:

@@ -84,6 +84,7 @@ class next_work():
         print("W_pos, f_pos checking.. done!", w_pos,"->",f_pos)
     
         # error handling #
+        print("###########",WAITING_POINT[w_pos])
         if STATUS_POS[f_pos] != 'nothing' or WAITING_POINT[w_pos] != 'nothing':
             if STATUS_POS[f_pos] != 'nothing':
                 print("ERROR! - please remove f_pos basket")

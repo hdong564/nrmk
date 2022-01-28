@@ -151,6 +151,7 @@ def rt_status_update():
             
             # 포토 센서 - 준비 공간
             if di[0] == False:
+                #print("di controlling")
                 if ('fried' in STATUS_POS['w0']):
                     STATUS_POS['w0'] = 'nothing'
                     FIN_EMPTY['w0'] = True
@@ -199,12 +200,24 @@ def rt_status_update():
                 WAITING_POINT['w6'] = 'empty'
             if di[6] == True:
                 WAITING_POINT['w6'] = 'nothing'
-            if di[7] == False:
+            # if di[7] == False:
+            #     if ('fried' in STATUS_POS['w7']):
+            #         STATUS_POS['w7'] = 'nothing'
+            #         FIN_EMPTY['w7'] = True
+            #     WAITING_POINT['w7'] = 'empty'
+            # if di[7] == True:
+            #     WAITING_POINT['w7'] = 'nothing'
+
+
+            '''for testing'''
+            if di[13] == False:
+                print("di controlling 13")
                 if ('fried' in STATUS_POS['w7']):
                     STATUS_POS['w7'] = 'nothing'
                     FIN_EMPTY['w7'] = True
                 WAITING_POINT['w7'] = 'empty'
-            if di[7] == True:
+            if di[13] == True:
+                #print(WAITING_POINT['w7'])
                 WAITING_POINT['w7'] = 'nothing'
 
             # WAITING_POINT['w0'] = 'empty' ###Test web
