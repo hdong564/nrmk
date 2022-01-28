@@ -35,13 +35,9 @@ COMMAND_LIMB_WAIT_CMD               = 3
 #COMMAND_LIMB_POTATO_PICKUP = 200
 COMMAND_LIMB_POTATO_PLACE_MACHINE = 200
 COMMAND_LIMB_POTATO_GET_WAIT = 210
-COMMAND_LIMB_POTATO_PLACE_FRY = 220
+COMMAND_LIMB_POTATO_PICKUP = 220
+'''All consts above are B variables'''  
 
-
-'''All consts abovve are B variables'''  
-
-
-'''CMDs for potato machine'''
 
 class CommandParam():
     def __init__(self, cmd_type: str, params):
@@ -74,19 +70,6 @@ class CommandBase():
     
     def done(self):
         pass
-
-class CMD_POTATO_PLACE_MACHINE(CommandBase):
-    def __init__(self,pos,status):
-        pass
-    def obtain_commands(self):
-        return CommandParam(COMMAND_TYPE_LIMB,COMMAND_LIMB_POTATO_PLACE_MACHINE)
-
-class CMD_POTATO_GET_WAIT(CommandBase):
-    def obtain_commands(self):
-        pass
-
-class CMD_POTATO_PLACE_FRY_SHAKE(CommandBase):
-    pass
 
 class CMD_CUSTOM(CommandBase):
     def __init__(self, target, cmd):
@@ -265,6 +248,63 @@ class CMD_FRY_PICKUP_N_SHAKE(CommandBase):
         print("CMD_FRY_PICKUP_N_SHAKE COOKING_TIME CHANGED:", self.pos, prev_time, "->", f"{time} ({get_frying_time(STATUS_POS[self.pos])})")
         STATUS_FRIED_TIME[self.pos] = time
 
+'''
+(next three cmds): for potato machine
+CMD_POTATO_PLACE_MACHINE: param 200 
+CMD_POTATO_GET_WAIT: param 210
+CMD_POTATO_PLACE_FRY_SHAKE: param 220
+'''
+class CMD_POTATO_PLACE_MACHINE(CommandBase):
+    # __init__ -> w_pos only
+    def start(self):
+        if STATUS_POS[self.pos] == "nothing":
+            STATUS_POS[self.pos] = "potato_holding"
+        
+    def obtain_commands(self):
+        return [
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_POTATO_PLACE_MACHINE + int(self.pos[1:]))
+        ]
+    def done(self):
+        STATUS_POS[self.pos] = "potato_get"
+        
+# test commit
+class CMD_POTATO_GET_WAIT(CommandBase):
+    def __init__(self,w_pos,size):
+        self.w_pos = w_pos
+        self.size = size
+    def start(self):
+        if STATUS_POS[self.pos] == "potato_get":
+            def cal_extraction_time(size):
+                return (3*size -1)
+            POTATO_SIZE.append(self.size)
+            POTATO_EXTRACTION_TIMES.append(cal_extraction_time(self.size))
+        else: 
+            print("ERROR!! - wrong direction of flow(Cmd-potato-get-wait")
+
+    def obtain_commands(self):
+        for i in range(2,5):
+            if POTATO_SIZE[0] == i:
+                return [CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_POTATO_GET_WAIT+i-2)]
+        
+        print("ERROR!! - no potato size..")
+        return None
+        # 210 -> S size
+        # 211 -> M size
+        # 212 -> L size
+    def done(self):
+        STATUS_POS[self.pos] = "potato_pickup"
+        del POTATO_SIZE[0]
+        del POTATO_EXTRACTION_TIMES[0]
+        
+class CMD_POTATO_PICKUP(CommandBase):
+    
+    def obtain_commands(self):
+        return [
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_POTATO_PICKUP + int(self.pos))
+        ]
+    def done(self):
+        STATUS_POS[self.pos] = "nothing"
+
 class CMD_WAIT_CMD(CommandBase):
     def start(self):
         STATUS_ROBOT["working"] = 0
@@ -321,28 +361,33 @@ class CommandJob():
     
     def get_current_job(self):
         return self.current_job
-
-class cmd_creation(Recipe,CommandJob):
-    def __init(self, recipe,w_pos,f_pos,status):
-        self.status = status
-        self.w_pos = w_pos
-        self.f_pos = f_pos
-        self.recipe = recipe
-        self.menu = recipe.get_menu()
-    
-    def init_cmds():
-        cmd = CommandJob()
-        cmd.clear_commands()
+def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
+    cmd = CommandJob()
+    cmd.clear_commands()
+    menu = recipe.get_menu()
+    if c_pos == FRY_POS + "fried":
+        print("cmd fry pickup, cmd air shake, cmd wait place")
+        cmd.add_cmd(CMD_FRY_PICKUP(f_pos,10))
+        cmd.add_cmd(CMD_AIR_SHAKE(f_pos))
+        print("here")
+        cmd.add_cmd(CMD_WAIT_PLACE(PREV_POS_DATA[f_pos], 10, pos1 = f_pos))
+        cmd.set_cooking_pos(f_pos)
+        print("Fry fin pos->", PREV_POS_DATA[f_pos]) #test
+        EARLY_FIN[f_pos] = False
         return cmd
-
-    def create_cmds(self,cmd,w_pos,f_pos,status): 
-        '''handle exception on recipe_logic.py'''
-        # get CJ type, return CJ
-        if self.menu == 1: # main menu - chicken
-            print("menu: Chicken")
+    elif c_pos == FRY_POS + "wait_shaking":
+        print(f"(menu: {menu}) frying basket processing ...")
+        cmd.add_cmd(CMD_FRY_PICKUP_N_SHAKE(f_pos, 10))
+        cmd.set_cooking_pos(f_pos)
+        cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
+        cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos))
+        return cmd
+    elif c_pos == BASKSET_POS:
+        if menu == 1: # chicken
+            print(f"(menu: {menu}) basket processing ...")
             cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))
-            if not self.recipe.immediate_shake or self.recipe.no_shaking():
-                cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos,10))
+            if not recipe.immediate_shake or recipe.no_shake:
+                cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos,10)) 
             else:
                 cmd.add_cmd(CMD_FRY_PLACE(f_pos,10))
             cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos,time = get_frying_time(status)))
@@ -350,16 +395,22 @@ class cmd_creation(Recipe,CommandJob):
             cmd.set_cooking_pos(f_pos)
             PREV_POS_DATA[f_pos] = w_pos
             return cmd
-        elif (2<=self.menu<=4): # side menu - fried potato
-            size = self.menu # S / M / L ( 2 / 3 / 4 ) amount 
-            cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))    # 1. pickup potato basket
-            cmd.add_cmd(CMD_POTATO_PLACE_MACHINE())   # 2. place basket to machine 
-            cmd.add_cmd(CMD_POTATO_GET_WAIT())        # 3. set DO = 1 -> get FP and wait  
-            cmd.add_cmd(CMD_POTATO_PLACE_FRY_SHAKE()) # 4. if done, place bakset to f_pos
-            cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos, time= get_frying_time(status)))
+
+        elif 2 <= menu <= 4:
+            print("menu: Fried Potato")
+            cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))
+            cmd.add_cmd(CMD_POTATO_PLACE_MACHINE(w_pos,10))
+            cmd.add_cmd(CMD_POTATO_GET_WAIT(w_pos,menu)) # 
+            cmd.add_cmd(CMD_POTATO_PICKUP(w_pos,10)) # comeback to wait pickup place
+            if not recipe.immediate_shake or recipe.no_shake:
+                cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos,10))
+            else:
+                cmd.add_cmd(CMD_FRY_PLACE(f_pos,10))
+            cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos,time = get_frying_time(status)))
             cmd.add_cmd(CMD_CHANGE_STATUS(f_pos,status))
             cmd.set_cooking_pos(f_pos)
-            PREV_POS_DATA[f_pos] = w_pos
-        elif self.menu == 5: # for beer 
-            return 1
-    
+        elif menu == 5:
+            print("menu: Beer!")
+        else:
+            print("ERROR!! - no menu" )
+
