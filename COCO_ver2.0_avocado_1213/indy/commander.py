@@ -91,7 +91,7 @@ def set_job(job):
                     indy_master.write_direct_variable(0, COMMANDER_ADDR, cmd.params)
                     while GLOBAL_FLAG['run'] and not CLEAR_RUNNING_COMMAND:
                         #for handling potato machine
-                        if POTATO_SIZE[0] > 0:
+                        if len(POTATO_SIZE)>0:
                             start_extraction = time()
                             record_extraction = time()
                             while record_extraction < start_extraction + POTATO_EXTRACTION_TIMES[0]:
@@ -460,7 +460,9 @@ def commander():
             
             COMMAND_CLEARED = False 
             ''' start main job'''
-            work = next_work()
+            work_class = next_work()
+            work = work_class.GetWork()
+            print("type of work::: ",type(work))
 
             ''' handle if there is no work'''
             if work is not None:
@@ -484,12 +486,12 @@ def commander():
 
             # print("Commander end")
             sleep(0.01)
-    except Exception as e:
-        _, _ , tb = sys.exc_info() # tb -> traceback object
-        print(sys.exc_info())
-        print(f"file name = {__file__}")
-        print(f'error line No = {tb.tb_lineno}')
-        print(e)
+    # except Exception as e:
+    #     _, _ , tb = sys.exc_info() # tb -> traceback object
+    #     print(sys.exc_info())
+    #     print(f"file name = {__file__}")
+    #     print(f'error line No = {tb.tb_lineno}')
+    #     print(e)
 
     finally:
         robot_connected = False
