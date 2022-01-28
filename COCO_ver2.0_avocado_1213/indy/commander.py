@@ -86,7 +86,7 @@ def set_job(job):
                 STATUS_FRIED_TIME[cmds.pos] = time
 
             else: # cmd type: COMMAND_TYPE_LIMB
-                print("CMD LIMB", cmd.params)
+                print("CMD LIMB", cmd.params, cmds.__repr__())
                 if not GLOBAL_FLAG['test_mode']:
                     indy_master.write_direct_variable(0, COMMANDER_ADDR, cmd.params)
                     while GLOBAL_FLAG['run'] and not CLEAR_RUNNING_COMMAND:
@@ -317,6 +317,7 @@ def rt_status_update():
             pos = 'f{}'.format(i)
             status_pos = STATUS_POS[pos]
             if status_pos != 'nothing':
+                #print(status_pos)
                 recipe_num = int(status_pos[-2:])
 
                 if 0 < recipe_num < 11: #음식종류 확인 (이전 코드수행시 걸린 시간처리)

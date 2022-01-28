@@ -1,0 +1,76 @@
+next_work start!
+done !
+# Main logic start ...
+checking w_pos...
+05
+######### Wpos logic Start! #########
+Wpos logic processing...
+menu:  0
+W_pos, f_pos checking.. done! w7 -> f3
+notshaked1_05 w7 f3 Basket_Pos_Cooking
+(menu: 0) basket processing ...
+[< cmd: <class 'indy.logic.commands.CMD_WAIT_PICKUP'>>, < cmd: <class 'indy.logic.comman                                                                                                                      ds.CMD_FRY_PLACE_SHAKENONE'>>, < cmd: <class 'indy.logic.commands.CMD_SET_COOKING_TIME'>                                                                                                                      >, < cmd: <class 'indy.logic.commands.CMD_CHANGE_STATUS'>>]
+######## Wpos logic Done! #########
+{0: [], 1: [<indy.logic.commands.CommandJob object at 0xb2e49e8c>], 2: []}
+type of work:::  <class 'indy.logic.commands.CommandJob'>
+[program_running] new job: <indy.logic.commands.CommandJob object at 0xb2e49e8c>
+CMD LIMB 67 < cmd: <class 'indy.logic.commands.CMD_WAIT_PICKUP'>>
+CMD LIMB 43 < cmd: <class 'indy.logic.commands.CMD_FRY_PLACE_SHAKENONE'>>
+CMD LIMB 53 < cmd: <class 'indy.logic.commands.CMD_FRY_PLACE_SHAKENONE'>>
+CMD COOKING_TIME f3 -0.10050678253173828 -> 58.89949321746826 (59)
+CMD STATUS f3 05 -> notshaked1_05
+next_work start!
+done !
+# Main logic start ...
+******** Fpos logic Start! *********
+Fpos logic processing... f3
+
+(menu: 0) frying basket processing ...
+********* Fpos logic Done! **********
+{0: [], 1: [], 2: [<indy.logic.commands.CommandJob object at 0xb2e2c5cc>]}
+type of work:::  <class 'indy.logic.commands.CommandJob'>
+[ready] new job: <indy.logic.commands.CommandJob object at 0xb2e2c5cc>
+CMD LIMB 23 < cmd: <class 'indy.logic.commands.CMD_FRY_PICKUP_N_SHAKE'>>
+CMD LIMB 153 < cmd: <class 'indy.logic.commands.CMD_FRY_PICKUP_N_SHAKE'>>
+CMD LIMB 53 < cmd: <class 'indy.logic.commands.CMD_FRY_PICKUP_N_SHAKE'>>
+CMD_FRY_PICKUP_N_SHAKE COOKING_TIME CHANGED: f3 57.34690046310425 -> 59 (59)
+CMD STATUS f3 notshaked1_05 ->
+Exception in thread Thread-4:
+Traceback (most recent call last):
+  File "/usr/lib/python3.7/threading.py", line 917, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.7/threading.py", line 865, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/user/handong/git/nrmk/COCO_ver2.0_avocado_1213/indy/commander.py", line 32                                                                                                                      1, in rt_status_update
+    recipe_num = int(status_pos[-2:])
+ValueError: invalid literal for int() with base 10: ''
+
+Commander Finish
+Exception in thread Thread-3:
+Traceback (most recent call last):
+  File "/usr/lib/python3.7/threading.py", line 917, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.7/threading.py", line 865, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/user/handong/git/nrmk/COCO_ver2.0_avocado_1213/indy/commander.py", line 49                                                                                                                      9, in commander
+    set_job(work)
+  File "/home/user/handong/git/nrmk/COCO_ver2.0_avocado_1213/indy/commander.py", line 61                                                                                                                      , in set_job
+    for cmd in cmds.obtain_commands():
+  File "/home/user/handong/git/nrmk/COCO_ver2.0_avocado_1213/indy/logic/commands.py", li                                                                                                                      ne 108, in obtain_commands
+    CommandParam(COMMAND_TYPE_COOKING_TIME, get_frying_time(STATUS_POS[self.pos]))
+  File "/home/user/handong/git/nrmk/COCO_ver2.0_avocado_1213/status.py", line 191, in ge                                                                                                                      t_frying_time
+    recipe_num = int(menu[-2:])
+ValueError: invalid literal for int() with base 10: ''
+
+done !
+app_ui_thread close
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/usr/lib/python3.7/threading.py", line 917, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.7/threading.py", line 865, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/user/handong/git/nrmk/COCO_ver2.0_avocado_1213/UI.py", line 87, in app_ui
+    if int(status_f_pos[-2:]) == j:
+ValueError: invalid literal for int() with base 10: ''
+

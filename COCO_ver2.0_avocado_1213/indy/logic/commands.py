@@ -57,8 +57,9 @@ class CommandBase():
 #             # CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_HOME)
 #         ]
     def __repr__(self):
-        return f"< cmd {self.pos} : {self.pos_code} >"
-    
+        return f"< cmd: {type(self)}>"
+#        return f"< cmd {self.pos} : {self.pos_code} : {type(self)}>"
+
     def obtain_commands(self):
         pass
 

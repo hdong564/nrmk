@@ -84,7 +84,7 @@ class next_work():
         print("W_pos, f_pos checking.. done!", w_pos,"->",f_pos)
     
         # error handling #
-        print("###########",WAITING_POINT[w_pos])
+        #print("###########",WAITING_POINT[w_pos])
         if STATUS_POS[f_pos] != 'nothing' or WAITING_POINT[w_pos] != 'nothing':
             if STATUS_POS[f_pos] != 'nothing':
                 print("ERROR! - please remove f_pos basket")
@@ -95,7 +95,26 @@ class next_work():
             ORDER_LIST.append(w_pos)
         # status selection #
         else:
-            status = self.get_status(recipe,status,w_pos)
+            #status = self.get_status(recipe,status,w_pos)
+            if recipe.no_shake:
+                    status = "shaked3_" + STATUS_POS[w_pos]
+            elif recipe.is_shake1:#
+                if recipe.immediate_shake:
+                    status = "shaked3_" + STATUS_POS[w_pos]
+                else:
+                    status = "notshaked1_" + STATUS_POS[w_pos]
+            elif recipe.is_shake2:
+                if recipe.immediate_shake:
+                    status = "shaked2_" + STATUS_POS[w_pos]
+                else: 
+                    status = "notshaked1_" + STATUS_POS[w_pos] 
+            elif recipe.is_shake3:
+                if recipe.immediate_shake:
+                    status = "shaked1_" + STATUS_POS[w_pos]
+                else: 
+                    status = "notshaked1_" + STATUS_POS[w_pos]
+            else: 
+                status = None
             print(status, w_pos, f_pos,c_pos)
             cmd = CmdCreation(recipe,status,w_pos,f_pos,c_pos)
             print(cmd.cmds)
@@ -103,29 +122,28 @@ class next_work():
             self.todo[1].append(cmd)
         print("######## Wpos logic Done! #########")
 
-    def get_status(recipe, status,w_pos):
-        # get status
-        if recipe.no_shake:
-                    status = "shaked3_" + STATUS_POS[w_pos]
-        elif recipe.is_shake1:#
-            if recipe.immediate_shake:
-                status = "shaked3_" + STATUS_POS[w_pos]
-            else:
-                status = "notshaked1_" + STATUS_POS[w_pos]
-        elif recipe.is_shake2:
-            if recipe.immediate_shake:
-                status = "shaked2_" + STATUS_POS[w_pos]
-            else: 
-                status = "notshaked1_" + STATUS_POS[w_pos] 
-        elif recipe.is_shake3:
-            if recipe.immediate_shake:
-                status = "shaked1_" + STATUS_POS[w_pos]
-            else: 
-                status = "notshaked1_" + STATUS_POS[w_pos]
-        else: 
-            status = None
-
-        return status
+    # def get_status(recipe,status,w_pos):
+    #     # get status
+    #     if recipe.no_shake:
+    #                 status = "shaked3_" + STATUS_POS[w_pos]
+    #     elif recipe.is_shake1:#
+    #         if recipe.immediate_shake:
+    #             status = "shaked3_" + STATUS_POS[w_pos]
+    #         else:
+    #             status = "notshaked1_" + STATUS_POS[w_pos]
+    #     elif recipe.is_shake2:
+    #         if recipe.immediate_shake:
+    #             status = "shaked2_" + STATUS_POS[w_pos]
+    #         else: 
+    #             status = "notshaked1_" + STATUS_POS[w_pos] 
+    #     elif recipe.is_shake3:
+    #         if recipe.immediate_shake:
+    #             status = "shaked1_" + STATUS_POS[w_pos]
+    #         else: 
+    #             status = "notshaked1_" + STATUS_POS[w_pos]
+    #     else: 
+    #         status = None
+    #     return status
 
     def MainLogic(self):
         for i in self.usable_place_num:
