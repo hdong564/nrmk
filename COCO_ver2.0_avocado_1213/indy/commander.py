@@ -56,7 +56,6 @@ def set_job(job):
     while GLOBAL_FLAG['run'] and not CLEAR_RUNNING_COMMAND and job.get_next_job() is not None:
         cmds = job.current_job
         STATUS_NEXT_WORK[0] = cmds.__repr__()
-        
         cmds.start()
         for cmd in cmds.obtain_commands():
             if not GLOBAL_FLAG['test_mode']:
@@ -86,7 +85,12 @@ def set_job(job):
                 STATUS_FRIED_TIME[cmds.pos] = time
 
             else: # cmd type: COMMAND_TYPE_LIMB
-                print("CMD LIMB", cmd.params, cmds.__repr__())
+                pos = cmds.pos
+                if pos == "readymotion":
+                    print("CMD LIMB", cmd.params, cmds.__repr__(), cmds.pos)
+                else:
+                    print("CMD LIMB", cmd.params, cmds.__repr__(), STATUS_POS[cmds.pos])
+                    
                 if not GLOBAL_FLAG['test_mode']:
                     indy_master.write_direct_variable(0, COMMANDER_ADDR, cmd.params)
                     while GLOBAL_FLAG['run'] and not CLEAR_RUNNING_COMMAND:
@@ -474,8 +478,8 @@ def commander():
             
             COMMAND_CLEARED = False 
             ''' start main job'''
-            work_class = next_work()
-            work = work_class.GetWork()
+            work_class = next_work() # print("init class: next_work"), del class
+            work = work_class.GetWork() # print main logic start..
             print("type of work::: ",type(work))
 
             ''' handle if there is no work'''

@@ -10,9 +10,10 @@ class next_work():
         self.todo = {}
         for i in range(3):
             self.todo[i] = []
-        print("next_work start!")
+        print("init class: next_work")
 
     def GetWork(self):
+        print("GetWork!!!!!!!!!")
         print("# Main logic start ...")
         self.MainLogic()
         print(self.todo)
@@ -43,7 +44,6 @@ class next_work():
         if 'fried' in status_f_pos:
             c_pos = FRY_POS + "fried"
             if (STATUS_FRIED_TIME_UI[f_pos] > recipe.total_time) or EARLY_FIN[f_pos] == True:
-                ''' gotta update'''
                 cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
                 self.todo[0].append(cmd)
         c_pos = FRY_POS + "wait_shaking"
@@ -122,29 +122,6 @@ class next_work():
             self.todo[1].append(cmd)
         print("######## Wpos logic Done! #########")
 
-    # def get_status(recipe,status,w_pos):
-    #     # get status
-    #     if recipe.no_shake:
-    #                 status = "shaked3_" + STATUS_POS[w_pos]
-    #     elif recipe.is_shake1:#
-    #         if recipe.immediate_shake:
-    #             status = "shaked3_" + STATUS_POS[w_pos]
-    #         else:
-    #             status = "notshaked1_" + STATUS_POS[w_pos]
-    #     elif recipe.is_shake2:
-    #         if recipe.immediate_shake:
-    #             status = "shaked2_" + STATUS_POS[w_pos]
-    #         else: 
-    #             status = "notshaked1_" + STATUS_POS[w_pos] 
-    #     elif recipe.is_shake3:
-    #         if recipe.immediate_shake:
-    #             status = "shaked1_" + STATUS_POS[w_pos]
-    #         else: 
-    #             status = "notshaked1_" + STATUS_POS[w_pos]
-    #     else: 
-    #         status = None
-    #     return status
-
     def MainLogic(self):
         for i in self.usable_place_num:
             f_pos = 'f{}'.format(i)
@@ -168,4 +145,4 @@ class next_work():
                 self.WposLogic(recipe_structure,w_pos)
 
     def __del__(self):
-        print("done !")
+        print("del class: next_work")
