@@ -40,22 +40,23 @@ class next_work():
         recipe = recipe_structure[0]
         recipe_num = recipe_structure[1]
         status_f_pos = STATUS_POS[f_pos]
+        print("status_f_pos: ",status_f_pos)
         status = ""
         if 'fried' in status_f_pos:
-            c_pos = FRY_POS + "fried"
+            c_pos = FRY_POS +"_"+ "fried"
             if (STATUS_FRIED_TIME_UI[f_pos] > recipe.total_time) or EARLY_FIN[f_pos] == True:
                 cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
                 self.todo[0].append(cmd)
-        c_pos = FRY_POS + "wait_shaking"
+        c_pos = FRY_POS +"_" +"wait_shaking"
         for i in range(1,SHAKING_NUM+1):
             if "waitshaking{}".format(i) in status_f_pos:
                 for j in range(1,SHAKING_NUM):
                     if recipe.get_shakeNum() == j:
                         status = "shaked{}".format(SHAKING_NUM-j+1) + status_f_pos.replace("waitshaking{}_".format(i),"")
+                        print(f"status : {status}")
+                        cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
+                        self.todo[2].append(cmd)
                         break
-        print(status)
-        cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
-        self.todo[2].append(cmd)
         # cmd = cmd_creation.init_cmds()
         # cmd = cmd_creation.create_cmds(cmd,None,f_pos,status)
         # self.todo[2].append(cmd)
@@ -115,9 +116,9 @@ class next_work():
                     status = "notshaked1_" + STATUS_POS[w_pos]
             else: 
                 status = None
-            print(status, w_pos, f_pos,c_pos)
+            print(f"!WposLogic! status: {status}, w_pos: {w_pos}, f_pos: {f_pos}, c_pos: {c_pos}")
             cmd = CmdCreation(recipe,status,w_pos,f_pos,c_pos)
-            print(cmd.cmds)
+            #print(cmd.cmds)
             del ORDER_LIST[0]
             self.todo[1].append(cmd)
         print("######## Wpos logic Done! #########")

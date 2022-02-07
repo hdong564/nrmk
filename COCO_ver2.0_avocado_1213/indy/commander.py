@@ -70,6 +70,8 @@ def set_job(job):
                 return
             
             elif cmd.type == COMMAND_TYPE_STATUS:
+                print("start status change !")
+                print(cmd.params)
                 pos, status = cmd.params
                 prev_status = STATUS_POS[pos]
                 STATUS_POS[pos] = status
@@ -90,7 +92,7 @@ def set_job(job):
                     print("CMD LIMB", cmd.params, cmds.__repr__(), cmds.pos)
                 else:
                     print("CMD LIMB", cmd.params, cmds.__repr__(), STATUS_POS[cmds.pos])
-                    
+
                 if not GLOBAL_FLAG['test_mode']:
                     indy_master.write_direct_variable(0, COMMANDER_ADDR, cmd.params)
                     while GLOBAL_FLAG['run'] and not CLEAR_RUNNING_COMMAND:

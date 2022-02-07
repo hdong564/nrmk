@@ -363,20 +363,21 @@ class CommandJob():
     def get_current_job(self):
         return self.current_job
 def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
+    print("cooking_pos: ", c_pos)
     cmd = CommandJob()
     cmd.clear_commands()
     menu = recipe.get_menu()
-    if c_pos == FRY_POS + "fried":
+    if c_pos == FRY_POS +"_"+ "fried":
         print("cmd fry pickup, cmd air shake, cmd wait place")
         cmd.add_cmd(CMD_FRY_PICKUP(f_pos,10))
         cmd.add_cmd(CMD_AIR_SHAKE(f_pos))
-        print("here")
+        #print("here")
         cmd.add_cmd(CMD_WAIT_PLACE(PREV_POS_DATA[f_pos], 10, pos1 = f_pos))
         cmd.set_cooking_pos(f_pos)
         print("Fry fin pos->", PREV_POS_DATA[f_pos]) #test
         EARLY_FIN[f_pos] = False
         return cmd
-    elif c_pos == FRY_POS + "wait_shaking":
+    elif c_pos == FRY_POS +"_"+ "wait_shaking":
         print(f"(menu: {menu}) frying basket processing ...")
         cmd.add_cmd(CMD_FRY_PICKUP_N_SHAKE(f_pos, 10))
         cmd.set_cooking_pos(f_pos)
