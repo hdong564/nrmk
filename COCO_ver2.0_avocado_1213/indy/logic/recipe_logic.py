@@ -50,9 +50,12 @@ class next_work():
         c_pos = FRY_POS +"_" +"wait_shaking"
         for i in range(1,SHAKING_NUM+1):
             if "waitshaking{}".format(i) in status_f_pos:
-                for j in range(1,SHAKING_NUM):
-                    if recipe.get_shakeNum() == j:
-                        status = "shaked{}".format(SHAKING_NUM-j+1) + status_f_pos.replace("waitshaking{}_".format(i),"")
+                print("wait shake -> shaked!")
+                print(range(1,SHAKING_NUM))
+                for j in range(1,SHAKING_NUM+1):
+                    print("shake num(j): ", recipe.get_shakeNum())
+                    if recipe.get_shakeNum() == j:  
+                        status = "shaked{}_".format(SHAKING_NUM-j+1) + status_f_pos.replace("waitshaking{}_".format(i),"")
                         print(f"status : {status}")
                         cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
                         self.todo[2].append(cmd)

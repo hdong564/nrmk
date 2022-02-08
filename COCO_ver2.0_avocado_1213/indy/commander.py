@@ -134,7 +134,7 @@ def update_robot_state():
     if STATUS_ROBOT["system"] == "home":
         STATUS_ROBOT["system"] = "ready"
 
-def rt_status_update():
+def rt_status_update(): # realtime status
     global SAFETY_PROGRAM_STOP_TICK,\
         robot_connected,\
         CONTY_PROGRAM_IS_RUNNING,\
@@ -332,8 +332,10 @@ def rt_status_update():
                 else:
                     STATUS_FRIED_TIME[pos] = 9999
                     STATUS_FRIED_TIME_UI[pos] = 0
-
-                if STATUS_FRIED_TIME[pos] < 0:  #조리 시간 이후            
+                #print("pos: ",pos)
+                if STATUS_FRIED_TIME[pos] < 0:  #조리 시간 이후       
+                    #print(f"status pos: {status_pos}")
+                    
                     if ('notshaked1_' in status_pos):
                         STATUS_POS[pos] = 'waitshaking1_' + status_pos.replace("notshaked1_", "")                
                     elif ('shaked1_' in status_pos):
@@ -349,7 +351,7 @@ def rt_status_update():
                 if ('waitshaking3_' in status_pos):
                     if STATUS_FRIED_TIME[pos] < -50:
                         STATUS_POS[pos] = 'fried_' + status_pos.replace("waitshaking3_", "") 
-        
+         
         prev_time = time()
     print("RT_STATUS end")
 
@@ -483,7 +485,7 @@ def commander():
             work_class = next_work() # print("init class: next_work"), del class
             work = work_class.GetWork() # print main logic start..
             print("type of work::: ",type(work))
-
+            print(STATUS_FRIED_TIME['f3'])
             ''' handle if there is no work'''
             if work is not None:
                 print(f"[{STATUS_ROBOT['system']}] new job: {work.__repr__()}")

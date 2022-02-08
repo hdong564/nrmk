@@ -172,7 +172,8 @@ class CMD_WAIT_PICKUP(CommandBase):
           
 class CMD_FRY_PLACE(CommandBase):    
     def obtain_commands(self):
-        r_n = int(STATUS_POS[self.pos][-2:])
+        print(self.pos)
+        r_n = int(STATUS_POS[self.pos][-2:]) # recipe num?
         s_h = RECIPE_DATA_APP[r_n-1][3]
 
         return ([CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_FRY_PLACE + int(self.pos[1:]))] + 
@@ -188,6 +189,7 @@ class CMD_FRY_PLACE(CommandBase):
 
 class CMD_FRY_PLACE_SHAKENONE(CommandBase):
     def obtain_commands(self):
+        print("shakenone pos: ",self.pos)
         return [
             CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_FRY_PLACE + int(self.pos[1:])),
             # CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_FRY_SHAKE + int(self.pos[1:])),
@@ -386,7 +388,7 @@ def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
         return cmd
     elif c_pos == BASKSET_POS:
         '''menu num should be read from UI'''
-        if menu == 0: # chicken
+        if menu == 1: # chicken
             print(f"(menu: {menu}) basket processing ...")
             cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))
             if not recipe.immediate_shake or recipe.no_shake:
@@ -399,7 +401,7 @@ def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
             PREV_POS_DATA[f_pos] = w_pos
             return cmd
 
-        elif 2 <= menu <= 4:
+        elif menu == 0:#2 <= menu <= 4:
             print("menu: Fried Potato")
             cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))
             cmd.add_cmd(CMD_POTATO_PLACE_MACHINE(w_pos,10))
