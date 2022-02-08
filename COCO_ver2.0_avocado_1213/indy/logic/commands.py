@@ -172,7 +172,7 @@ class CMD_WAIT_PICKUP(CommandBase):
           
 class CMD_FRY_PLACE(CommandBase):    
     def obtain_commands(self):
-        print(self.pos)
+        STATUS_FRIED_TIME[self.pos] = 0
         r_n = int(STATUS_POS[self.pos][-2:]) # recipe num?
         s_h = RECIPE_DATA_APP[r_n-1][3]
 
@@ -184,7 +184,7 @@ class CMD_FRY_PLACE(CommandBase):
         if STATUS_ROBOT["holding"] != "nothing":
             STATUS_POS[self.pos] = STATUS_ROBOT["holding"]
             STATUS_ROBOT["holding"] = "nothing"
-            STATUS_FRIED_TIME[self.pos] = get_frying_time(STATUS_POS[self.pos])
+            #STATUS_FRIED_TIME[self.pos] = get_frying_time(STATUS_POS[self.pos])
             STATUS_ROBOT["working"] = 0
 
 class CMD_FRY_PLACE_SHAKENONE(CommandBase):
@@ -411,6 +411,7 @@ def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
             if not recipe.immediate_shake or recipe.no_shake:
                 cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos,10))
             else:
+                cmd.add_cmd(CMD_CHANGE_STATUS(f_pos,status))
                 cmd.add_cmd(CMD_FRY_PLACE(f_pos,10))
             cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos,time = get_frying_time(status)))
             cmd.add_cmd(CMD_CHANGE_STATUS(f_pos,status))

@@ -70,8 +70,8 @@ def set_job(job):
                 return
             
             elif cmd.type == COMMAND_TYPE_STATUS:
-                print("start status change !")
-                print(cmd.params)
+                #print("CMD STATUS start status change !")
+                #print(cmd.params)
                 pos, status = cmd.params
                 prev_status = STATUS_POS[pos]
                 STATUS_POS[pos] = status
@@ -328,6 +328,7 @@ def rt_status_update(): # realtime status
 
                 if 0 < recipe_num < 11: #음식종류 확인 (이전 코드수행시 걸린 시간처리)
                     STATUS_FRIED_TIME[pos] -= time()-prev_time
+                    print("******fried_time :",STATUS_FRIED_TIME[pos])
                     STATUS_FRIED_TIME_UI[pos] += time()-prev_time
                 else:
                     STATUS_FRIED_TIME[pos] = 9999
@@ -485,7 +486,7 @@ def commander():
             work_class = next_work() # print("init class: next_work"), del class
             work = work_class.GetWork() # print main logic start..
             print("type of work::: ",type(work))
-            print(STATUS_FRIED_TIME['f3'])
+            #print(STATUS_FRIED_TIME['f3'])
             ''' handle if there is no work'''
             if work is not None:
                 print(f"[{STATUS_ROBOT['system']}] new job: {work.__repr__()}")
