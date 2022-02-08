@@ -388,12 +388,13 @@ def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
         return cmd
     elif c_pos == BASKSET_POS:
         '''menu num should be read from UI'''
-        if menu == 1: # chicken
+        if menu == 0: # chicken
             print(f"(menu: {menu}) basket processing ...")
             cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))
             if not recipe.immediate_shake or recipe.no_shake:
                 cmd.add_cmd(CMD_FRY_PLACE_SHAKENONE(f_pos,10)) 
             else:
+                cmd.add_cmd(CMD_CHANGE_STATUS(f_pos,status))
                 cmd.add_cmd(CMD_FRY_PLACE(f_pos,10))
             cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos,time = get_frying_time(status)))
             cmd.add_cmd(CMD_CHANGE_STATUS(f_pos,status))
@@ -401,7 +402,7 @@ def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
             PREV_POS_DATA[f_pos] = w_pos
             return cmd
 
-        elif menu == 0:#2 <= menu <= 4:
+        elif menu == 1:#2 <= menu <= 4:
             print("menu: Fried Potato")
             cmd.add_cmd(CMD_WAIT_PICKUP(w_pos,10))
             cmd.add_cmd(CMD_POTATO_PLACE_MACHINE(w_pos,10))
