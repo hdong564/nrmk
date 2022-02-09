@@ -200,13 +200,14 @@ def rt_status_update(): # realtime status
                 WAITING_POINT['w5'] = 'empty'
             if di[5] == True:
                 WAITING_POINT['w5'] = 'nothing'
-            if di[6] == False:
-                if ('fried' in STATUS_POS['w6']):
-                    STATUS_POS['w6'] = 'nothing'
-                    FIN_EMPTY['w6'] = True
-                WAITING_POINT['w6'] = 'empty'
-            if di[6] == True:
-                WAITING_POINT['w6'] = 'nothing'
+            # if di[6] == False:
+                
+            #     if ('fried' in STATUS_POS['w6']):
+            #         STATUS_POS['w6'] = 'nothing'
+            #         FIN_EMPTY['w6'] = True
+            #     WAITING_POINT['w6'] = 'empty'
+            # if di[6] == True:
+            #     WAITING_POINT['w6'] = 'nothing'
             # if di[7] == False:
             #     if ('fried' in STATUS_POS['w7']):
             #         STATUS_POS['w7'] = 'nothing'
@@ -215,8 +216,16 @@ def rt_status_update(): # realtime status
             # if di[7] == True:
             #     WAITING_POINT['w7'] = 'nothing'
 
-
             '''for testing'''
+            if di[11] == False:
+                print("di controlloing 11")
+                if ('fried' in STATUS_POS['w6']):
+                    STATUS_POS['w6'] = 'nothing'
+                    FIN_EMPTY['w6'] = True
+                WAITING_POINT['w6'] = 'empty'
+            if di[11] == True:
+                WAITING_POINT['w6'] = 'nothing'
+
             if di[13] == False:
                 print("di controlling 13")
                 if ('fried' in STATUS_POS['w7']):
