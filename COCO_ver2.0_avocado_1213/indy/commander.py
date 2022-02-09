@@ -79,31 +79,32 @@ def set_job(job):
 
             elif cmd.type == COMMAND_TYPE_COOKING_TIME:
                 prev_time = STATUS_FRIED_TIME[cmds.pos]
-                time = cmd.params
+                curr_time = cmd.params
                 if prev_time < 0:
-                    time += prev_time
+                    curr_time += prev_time
                     
-                print("CMD COOKING_TIME", cmds.pos, prev_time, "->", f"{time} ({cmd.params})")
-                STATUS_FRIED_TIME[cmds.pos] = time
+                print("CMD COOKING_TIME", cmds.pos, prev_time, "->", f"{curr_time} ({cmd.params})")
+                STATUS_FRIED_TIME[cmds.pos] = curr_time
 
             else: # cmd type: COMMAND_TYPE_LIMB
                 pos = cmds.pos
                 if pos == "readymotion":
                     print("CMD LIMB", cmd.params, cmds.__repr__(), cmds.pos)
                 else:
-                    print("CMD LIMB", cmd.params, cmds.__repr__(), STATUS_POS[cmds.pos])
+                    print("CMD LIMB", cmd.params, cmds.__repr__(), "status_pos:",STATUS_POS[cmds.pos])
 
                 if not GLOBAL_FLAG['test_mode']:
                     indy_master.write_direct_variable(0, COMMANDER_ADDR, cmd.params)
                     while GLOBAL_FLAG['run'] and not CLEAR_RUNNING_COMMAND:
                         #for handling potato machine
-                        if len(POTATO_SIZE)>0:
+                        if len(POTATO_SIZE) > 0:
                             start_extraction = time()
                             record_extraction = time()
                             while record_extraction < start_extraction + POTATO_EXTRACTION_TIMES[0]:
                                 indy_master.set_do(DO_POTATO_EXTRACTION,True)
-                                record_extraction = time() # update time 
-                            indy_master.set_do(DO_POTATO_EXTRACTION,False)
+                                record_extraction = time() # update time()
+                                remain_t = POTATO_EXTRACTION_TIMES[0] - (record_extraction-start_extraction)
+                                print(f"remaining time: {remain_t}/{POTATO_EXTRACTION_TIMES[0]}")
                         if indy_master.read_direct_variable(0, COMMANDER_ADDR) == 0:
                             break
                         else:

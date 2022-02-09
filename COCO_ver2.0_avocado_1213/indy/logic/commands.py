@@ -272,15 +272,18 @@ class CMD_POTATO_PLACE_MACHINE(CommandBase):
         
 # test commit
 class CMD_POTATO_GET_WAIT(CommandBase):
-    def __init__(self,w_pos,size):
-        self.w_pos = w_pos
-        self.size = size
+    def __init__(self,pos,size):
+        self.pos = pos
+        #self.size = size
+        self.size = size+2 # for debugging
     def start(self):
         if STATUS_POS[self.pos] == "potato_get":
+            #print("here!")
             def cal_extraction_time(size):
                 return (3*size -1)
             POTATO_SIZE.append(self.size)
             POTATO_EXTRACTION_TIMES.append(cal_extraction_time(self.size))
+            print("size:",POTATO_SIZE,"extract: ",POTATO_EXTRACTION_TIMES)
         else: 
             print("ERROR!! - wrong direction of flow(Cmd-potato-get-wait")
 
@@ -288,7 +291,6 @@ class CMD_POTATO_GET_WAIT(CommandBase):
         for i in range(2,5):
             if POTATO_SIZE[0] == i:
                 return [CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_POTATO_GET_WAIT+i-2)]
-        
         print("ERROR!! - no potato size..")
         return None
         # 210 -> S size
@@ -298,12 +300,14 @@ class CMD_POTATO_GET_WAIT(CommandBase):
         STATUS_POS[self.pos] = "potato_pickup"
         del POTATO_SIZE[0]
         del POTATO_EXTRACTION_TIMES[0]
+        if not POTATO_SIZE and not POTATO_EXTRACTION_TIMES:
+            print("clear lists success! - potato lists")
         
 class CMD_POTATO_PICKUP(CommandBase):
     
     def obtain_commands(self):
         return [
-            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_POTATO_PICKUP + int(self.pos))
+            CommandParam(COMMAND_TYPE_LIMB, COMMAND_LIMB_POTATO_PICKUP)
         ]
     def done(self):
         STATUS_POS[self.pos] = "nothing"
