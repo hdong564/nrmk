@@ -43,6 +43,39 @@ class CommandParam():
     def __init__(self, cmd_type: str, params):
         self.type = cmd_type
         self.params = params
+    def GetCmdName(self):
+        
+        param = int(self.params/10)*10
+        if self.params < 10:
+            param = self.params
+        if param == COMMAND_LIMB_FRY_PICK_MOVE:
+            return "COMMAND_LIMB_FRY_PICK_MOVE"
+        elif param == COMMAND_LIMB_FRY_PICKUP:
+            return "COMMAND_LIMB_FRY_PICKUP"
+        elif param == COMMAND_LIMB_FRY_PLACE:
+            return "COMMAND_LIMB_FRY_PLACE"
+        elif param == COMMAND_LIMB_FRY_PLACE_END:
+            return "COMMAND_LIMB_FRY_PLACE_END"
+        elif param == COMMAND_LIMB_WAIT_PICKUP:
+            return "COMMAND_LIMB_WAIT_PICKUP"
+        elif param == COMMAND_LIMB_WAIT_PLACE:
+            return "COMMAND_LIMB_WAIT_PLACE"
+        elif param == COMMAND_LIMB_AIR_WAIT:
+            return "COMMAND_LIMB_AIR_WAIT"
+        elif param == COMMAND_LIMB_AIR_SHAKE:
+            return "COMMAND_LIMB_AIR_SHAKE"
+        elif param == COMMAND_LIMB_FRY_SHAKE:
+            return "COMMAND_LIMB_FRY_SHAKE"
+        elif param == COMMAND_LIMB_WAIT_CMD:
+            return "COMMAND_LIMB_WAIT_CMD"
+        elif param == COMMAND_LIMB_POTATO_PLACE_MACHINE:
+            return "COMMAND_LIMB_POTATO_PLACE_MACHINE"
+        elif param == COMMAND_LIMB_POTATO_GET_WAIT:
+            return "COMMAND_LIMB_POTATO_GET_WAIT"
+        elif param == COMMAND_LIMB_POTATO_PICKUP:
+            return "COMMAND_LIMB_POTATO_PICKUP"
+        else:
+            return None
 
 class CommandBase():
     def __init__(self, pos, motion_time=0, pos1=None):
@@ -370,15 +403,12 @@ class CommandJob():
     def get_current_job(self):
         return self.current_job
 def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
-    print("cooking_pos: ", c_pos)
     cmd = CommandJob()
     cmd.clear_commands()
     menu = recipe.get_menu()
     if c_pos == FRY_POS +"_"+ "fried":
-        print("cmd fry pickup, cmd air shake, cmd wait place")
         cmd.add_cmd(CMD_FRY_PICKUP(f_pos,10))
         cmd.add_cmd(CMD_AIR_SHAKE(f_pos))
-        #print("here")
         cmd.add_cmd(CMD_WAIT_PLACE(PREV_POS_DATA[f_pos], 10, pos1 = f_pos))
         cmd.set_cooking_pos(f_pos)
         print("Fry fin pos->", PREV_POS_DATA[f_pos]) #test

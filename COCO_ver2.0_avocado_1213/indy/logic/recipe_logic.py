@@ -10,13 +10,11 @@ class next_work():
         self.todo = {}
         for i in range(3):
             self.todo[i] = []
-        print("init class: next_work")
 
     def GetWork(self):
-        print("GetWork!!!!!!!!!")
-        print("# Main logic start ...")
         self.MainLogic()
-        print(self.todo)
+        print(f"\n**** TODO list ****\n{self.todo}\n")
+
         for i in range(3):
             for work in self.todo[i]:
                 return work
@@ -36,11 +34,9 @@ class next_work():
 
     def FposLogic(self,recipe_structure,f_pos):
         '''Logic for fry pos'''
-        print("Fpos logic processing...", f_pos)
         recipe = recipe_structure[0]
         recipe_num = recipe_structure[1]
         status_f_pos = STATUS_POS[f_pos]
-        print("status_f_pos: ",status_f_pos)
         status = ""
         if 'fried' in status_f_pos:
             c_pos = FRY_POS +"_"+ "fried"
@@ -50,41 +46,28 @@ class next_work():
         c_pos = FRY_POS +"_" +"wait_shaking"
         for i in range(1,SHAKING_NUM+1):
             if "waitshaking{}".format(i) in status_f_pos:
-                print("wait shake -> shaked!")
-                print(range(1,SHAKING_NUM))
+                print("shake num(j): ", recipe.get_shakeNum())
                 for j in range(1,SHAKING_NUM+1):
-                    print("shake num(j): ", recipe.get_shakeNum())
                     if recipe.get_shakeNum() == j:  
                         status = "shaked{}_".format(SHAKING_NUM-j+1) + status_f_pos.replace("waitshaking{}_".format(i),"")
-                        print(f"status : {status}")
                         cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
                         self.todo[2].append(cmd)
                         break
-        # cmd = cmd_creation.init_cmds()
-        # cmd = cmd_creation.create_cmds(cmd,None,f_pos,status)
-        # self.todo[2].append(cmd)
-
-        print("********* Fpos logic Done! **********")
 
     def WposLogic(self,recipe_structure,w_pos):
         '''Logic for basket pos'''
-        print("Wpos logic processing...")
         recipe = recipe_structure[0]
         recipe_num = recipe_structure[1]
-        #print(recipe.array)
         menu = recipe.get_menu()
-        print("menu: ",menu)
         c_pos = BASKSET_POS
         check_count = 0
         status = ""
-
         for i in range(6):
             if (2<= i <= 3):
                 continue
             if w_pos == 'w{}'.format(i) or w_pos == 'w{}'.format(i+2):
                 f_pos = 'f{}'.format(check_count)
             check_count +=1
-
         print("W_pos, f_pos checking.. done!", w_pos,"->",f_pos)
     
         # error handling #
@@ -119,20 +102,15 @@ class next_work():
                     status = "notshaked1_" + STATUS_POS[w_pos]
             else: 
                 status = None
-            print(f"!WposLogic! status: {status}, w_pos: {w_pos}, f_pos: {f_pos}, c_pos: {c_pos}")
             cmd = CmdCreation(recipe,status,w_pos,f_pos,c_pos)
-            #print(cmd.cmds)
             del ORDER_LIST[0]
             self.todo[1].append(cmd)
-        print("######## Wpos logic Done! #########")
 
     def MainLogic(self):
         for i in self.usable_place_num:
             f_pos = 'f{}'.format(i)
             status_f_pos = STATUS_POS[f_pos]
-            #print("checking f_pos ... ",f_pos)
             if status_f_pos != 'nothing':
-                print("******** Fpos logic Start! *********")
                 recipe_structure = self.GetRecipe(status_f_pos)
                 self.FposLogic(recipe_structure,f_pos)    
             else:
@@ -141,12 +119,10 @@ class next_work():
         if len(ORDER_LIST) and (self.todo[0] == []):
             w_pos = ORDER_LIST[0]
             status_w_pos = STATUS_POS[w_pos]
-            print("checking w_pos...")
             if status_w_pos != 'nothing':
                 print(status_w_pos)
-                print("######### Wpos logic Start! #########")
                 recipe_structure = self.GetRecipe(status_w_pos)
                 self.WposLogic(recipe_structure,w_pos)
 
     def __del__(self):
-        print("del class: next_work")
+        print("next_work processing done!")

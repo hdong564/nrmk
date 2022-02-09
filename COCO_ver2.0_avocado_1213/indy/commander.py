@@ -89,9 +89,9 @@ def set_job(job):
             else: # cmd type: COMMAND_TYPE_LIMB
                 pos = cmds.pos
                 if pos == "readymotion":
-                    print("CMD LIMB", cmd.params, cmds.__repr__(), cmds.pos)
+                    print("CMD LIMB", f"({cmd.GetCmdName()})")
                 else:
-                    print("CMD LIMB", cmd.params, cmds.__repr__(), "status_pos:",STATUS_POS[cmds.pos])
+                    print("CMD LIMB", cmd.GetCmdName())
 
                 if not GLOBAL_FLAG['test_mode']:
                     indy_master.write_direct_variable(0, COMMANDER_ADDR, cmd.params)
@@ -151,6 +151,8 @@ def rt_status_update(): # realtime status
     print("RT_STATUS start")    
     while GLOBAL_FLAG['run']:
         sleep(0.1)
+        print("status w7:",STATUS_POS['w7'])
+        print("status f3:",STATUS_POS['f3'])
         ui_request = STATUS_ROBOT["ui_request"] 
         if not GLOBAL_FLAG['test_mode']:
             # # 포토 센서
@@ -346,11 +348,11 @@ def rt_status_update(): # realtime status
                 #print("pos: ",pos)
                 if STATUS_FRIED_TIME[pos] < 0:  #조리 시간 이후       
                     #print(f"status pos: {status_pos}")
-                    
                     if ('notshaked1_' in status_pos):
                         STATUS_POS[pos] = 'waitshaking1_' + status_pos.replace("notshaked1_", "")                
                     elif ('shaked1_' in status_pos):
                         STATUS_POS[pos] = 'waitshaking2_' + status_pos.replace("shaked1_", "")
+                        print("adsfadfa",STATUS_POS[pos])
                     elif ('shaked2_' in status_pos):
                         STATUS_POS[pos] = 'waitshaking3_' + status_pos.replace("shaked2_", "")
                     elif ('shaked3_' in status_pos): #shaked 치킨
