@@ -151,8 +151,6 @@ def rt_status_update(): # realtime status
     print("RT_STATUS start")    
     while GLOBAL_FLAG['run']:
         sleep(0.1)
-        print("status w7:",STATUS_POS['w7'])
-        print("status f3:",STATUS_POS['f3'])
         ui_request = STATUS_ROBOT["ui_request"] 
         if not GLOBAL_FLAG['test_mode']:
             # # 포토 센서

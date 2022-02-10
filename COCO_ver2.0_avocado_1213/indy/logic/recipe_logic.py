@@ -64,47 +64,8 @@ class next_work():
                 self.todo[0].append(cmd)
         c_pos = FRY_POS +"_" +"wait_shaking"
         print("###c pos:   ",c_pos)
-        # for i in range(1,SHAKING_NUM+1):
-        #     print(status_f_pos,"i: ",i)
-        #     if "waitshaking{}".format(i) in status_f_pos:
-        #         print("@!!!! waitshaking{}".format(i))
-        #         print(recipe.get_shakeNum())
-
-        #         for j in range(i,SHAKING_NUM+1):
-        #             print(j)
-        #             if recipe.get_shakeNum() == j:  
-        #                 print("shake num", j)
-
-        #                 status = "shaked{}_".format(i+SHAKING_NUM-j) + status_f_pos.replace("waitshaking{}_".format(i),"")
-        #                 print("#########################################")
-        #                 print("#########################################")
-        #                 print("#########################################")
-        #                 print("change to ", status)
-        #                 print("#########################################")
-        #                 print("#########################################")
-        #                 print("#########################################")
-        #                 cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
-        #                 self.todo[2].append(cmd)
-        #                 break
-        # for i in range(1,SHAKING_NUM+1): # 1~3
-        #     if i == INIT_STATE:
-        #         if "waitshaking{}".format(i) in status_f_pos:
-        #             print("direction decide..")
-        #             for j in range(INIT_STATE,SHAKING_NUM+1):
-        #                 if recipe.get_shakeNum() == j:
-        #                     status = "shaked{}_".format(SHAKING_NUM+1 - j) + status_f_pos.replace("waitshaking{}_".format(i),"")
-        #     else: # waitshaking2 -> shaked2 // waitshaking3 -> shaked3
-        #         if "waitshaking2" in status_f_pos:
-        #             status = "shaked2_"+ status_f_pos.replace("waitshaking2_","")
-        #         elif "waitshaking3" in status_f_pos:
-        #             status = "shaked3_"+ status_f_pos.replace("waitshaking3_","")
-        #     cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
-        #     self.todo[2].append(cmd)
-        #     break
+        
         if ('waitshaking1' in status_f_pos):
-            # for j in range(INIT_STATE,SHAKING_NUM+1):
-            #     if recipe.get_shakeNum() == j:
-            #         status = "shaked{}_".format(SHAKING_NUM+1 - j) + status_f_pos.replace("waitshaking{}_".format(i),"")
             shake_n = recipe.get_shakeNum() 
             if shake_n == 1:
                 status = "shaked3_" + status_f_pos.replace("waitshaking1_","")
@@ -119,7 +80,7 @@ class next_work():
             status = "shaked2_"+ status_f_pos.replace("waitshaking2_","")
             cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
             self.todo[2].append(cmd)
-            
+
         elif "waitshaking3" in status_f_pos:
             status = "shaked3_"+ status_f_pos.replace("waitshaking3_","")
             cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
