@@ -7,7 +7,7 @@ GLOBAL_FLAG = {'run': False, 'test_mode': False, 'isChanged': False, 'menu_end1'
 
 CHECK_FLAG = {'menu_check1':False, 'menu_check2':False, 'menu_check3':False, 'menu_check4':False, 'menu_check5':False, 'menu_check6':False, 'menu_check7':False, 'menu_check8':False }
 
-
+INIT_STATE = 1
 SHAKING_NUM = 3
 
 FRY_POS = 'Fry_Pos_Cooking'

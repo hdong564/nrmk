@@ -26,6 +26,24 @@ class next_work():
             return work
         return None
 
+    def MainLogic(self):
+        for i in self.usable_place_num:
+            f_pos = 'f{}'.format(i)
+            status_f_pos = STATUS_POS[f_pos]
+            if status_f_pos != 'nothing':
+                recipe_structure = self.GetRecipe(status_f_pos)
+                self.FposLogic(recipe_structure,f_pos)    
+            else:
+                continue
+
+        if len(ORDER_LIST) and (self.todo[0] == []):
+            w_pos = ORDER_LIST[0]
+            status_w_pos = STATUS_POS[w_pos]
+            if status_w_pos != 'nothing':
+                print(status_w_pos)
+                recipe_structure = self.GetRecipe(status_w_pos)
+                self.WposLogic(recipe_structure,w_pos)
+
     def GetRecipe(self,status_pos):
         '''return type: len 22 array and int -- tuple'''
         recipe_num = int(status_pos[-2:]) 
@@ -34,6 +52,7 @@ class next_work():
 
     def FposLogic(self,recipe_structure,f_pos):
         '''Logic for fry pos'''
+        print("*************************fpos logic start!")
         recipe = recipe_structure[0]
         recipe_num = recipe_structure[1]
         status_f_pos = STATUS_POS[f_pos]
@@ -44,15 +63,67 @@ class next_work():
                 cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
                 self.todo[0].append(cmd)
         c_pos = FRY_POS +"_" +"wait_shaking"
-        for i in range(1,SHAKING_NUM+1):
-            if "waitshaking{}".format(i) in status_f_pos:
-                print("shake num(j): ", recipe.get_shakeNum())
-                for j in range(1,SHAKING_NUM+1):
-                    if recipe.get_shakeNum() == j:  
-                        status = "shaked{}_".format(SHAKING_NUM-j+1) + status_f_pos.replace("waitshaking{}_".format(i),"")
-                        cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
-                        self.todo[2].append(cmd)
-                        break
+        print("###c pos:   ",c_pos)
+        # for i in range(1,SHAKING_NUM+1):
+        #     print(status_f_pos,"i: ",i)
+        #     if "waitshaking{}".format(i) in status_f_pos:
+        #         print("@!!!! waitshaking{}".format(i))
+        #         print(recipe.get_shakeNum())
+
+        #         for j in range(i,SHAKING_NUM+1):
+        #             print(j)
+        #             if recipe.get_shakeNum() == j:  
+        #                 print("shake num", j)
+
+        #                 status = "shaked{}_".format(i+SHAKING_NUM-j) + status_f_pos.replace("waitshaking{}_".format(i),"")
+        #                 print("#########################################")
+        #                 print("#########################################")
+        #                 print("#########################################")
+        #                 print("change to ", status)
+        #                 print("#########################################")
+        #                 print("#########################################")
+        #                 print("#########################################")
+        #                 cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
+        #                 self.todo[2].append(cmd)
+        #                 break
+        # for i in range(1,SHAKING_NUM+1): # 1~3
+        #     if i == INIT_STATE:
+        #         if "waitshaking{}".format(i) in status_f_pos:
+        #             print("direction decide..")
+        #             for j in range(INIT_STATE,SHAKING_NUM+1):
+        #                 if recipe.get_shakeNum() == j:
+        #                     status = "shaked{}_".format(SHAKING_NUM+1 - j) + status_f_pos.replace("waitshaking{}_".format(i),"")
+        #     else: # waitshaking2 -> shaked2 // waitshaking3 -> shaked3
+        #         if "waitshaking2" in status_f_pos:
+        #             status = "shaked2_"+ status_f_pos.replace("waitshaking2_","")
+        #         elif "waitshaking3" in status_f_pos:
+        #             status = "shaked3_"+ status_f_pos.replace("waitshaking3_","")
+        #     cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
+        #     self.todo[2].append(cmd)
+        #     break
+        if ('waitshaking1' in status_f_pos):
+            # for j in range(INIT_STATE,SHAKING_NUM+1):
+            #     if recipe.get_shakeNum() == j:
+            #         status = "shaked{}_".format(SHAKING_NUM+1 - j) + status_f_pos.replace("waitshaking{}_".format(i),"")
+            shake_n = recipe.get_shakeNum() 
+            if shake_n == 1:
+                status = "shaked3_" + status_f_pos.replace("waitshaking1_","")
+            if shake_n == 2:
+                status = "shaked2_" + status_f_pos.replace("waitshaking1_","")
+            if shake_n == 3:
+                status = "shaked1_" + status_f_pos.replace("waitshaking1_","")
+            cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
+            self.todo[2].append(cmd)
+
+        elif "waitshaking2" in status_f_pos:
+            status = "shaked2_"+ status_f_pos.replace("waitshaking2_","")
+            cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
+            self.todo[2].append(cmd)
+            
+        elif "waitshaking3" in status_f_pos:
+            status = "shaked3_"+ status_f_pos.replace("waitshaking3_","")
+            cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
+            self.todo[2].append(cmd)
 
     def WposLogic(self,recipe_structure,w_pos):
         '''Logic for basket pos'''
@@ -68,7 +139,7 @@ class next_work():
             if w_pos == 'w{}'.format(i) or w_pos == 'w{}'.format(i+2):
                 f_pos = 'f{}'.format(check_count)
             check_count +=1
-        print("W_pos, f_pos checking.. done!", w_pos,"->",f_pos)
+        #print("W_pos, f_pos checking.. done!", w_pos,"->",f_pos)
     
         # error handling #
         #print("###########",WAITING_POINT[w_pos])
@@ -106,23 +177,6 @@ class next_work():
             del ORDER_LIST[0]
             self.todo[1].append(cmd)
 
-    def MainLogic(self):
-        for i in self.usable_place_num:
-            f_pos = 'f{}'.format(i)
-            status_f_pos = STATUS_POS[f_pos]
-            if status_f_pos != 'nothing':
-                recipe_structure = self.GetRecipe(status_f_pos)
-                self.FposLogic(recipe_structure,f_pos)    
-            else:
-                continue
-
-        if len(ORDER_LIST) and (self.todo[0] == []):
-            w_pos = ORDER_LIST[0]
-            status_w_pos = STATUS_POS[w_pos]
-            if status_w_pos != 'nothing':
-                print(status_w_pos)
-                recipe_structure = self.GetRecipe(status_w_pos)
-                self.WposLogic(recipe_structure,w_pos)
 
     def __del__(self):
         print("next_work processing done!")
