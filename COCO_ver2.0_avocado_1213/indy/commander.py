@@ -338,7 +338,11 @@ def rt_status_update(): # realtime status
 
                 if 0 < recipe_num < 11: #음식종류 확인 (이전 코드수행시 걸린 시간처리)
                     STATUS_FRIED_TIME[pos] -= time()-prev_time
-                    print("******fried_time :",STATUS_FRIED_TIME[pos])
+                    
+                    if (STATUS_FRIED_TIME[pos]>0):
+                        print("******fried_time :",STATUS_FRIED_TIME[pos])
+                    else:
+                        pass
                     STATUS_FRIED_TIME_UI[pos] += time()-prev_time
                 else:
                     STATUS_FRIED_TIME[pos] = 9999
@@ -494,13 +498,12 @@ def commander():
             COMMAND_CLEARED = False 
             ''' start main job'''
             work_class = next_work() # print("init class: next_work"), del class
-            work = work_class.GetWork() # print main logic start..
-            print("type of work::: ",type(work))
-            #print(STATUS_FRIED_TIME['f3'])
+            work = work_class.GetWork() # print main logic start.
             ''' handle if there is no work'''
             if work is not None:
-                print(f"[{STATUS_ROBOT['system']}] new job: {work.__repr__()}")
+                #print(f"[{STATUS_ROBOT['system']}] new job: {work.__repr__()}")
                 #print(f"Work state: {work.get_next_job}")
+                pass
             # decide which work todo.
             if work is None: # if there is no work, implement UI_requested work!!
                 IS_COMMAND_RUNNING = False

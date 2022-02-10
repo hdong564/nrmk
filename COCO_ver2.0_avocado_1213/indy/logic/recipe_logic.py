@@ -13,7 +13,7 @@ class next_work():
 
     def GetWork(self):
         self.MainLogic()
-        print(f"\n**** TODO list ****\n{self.todo}\n")
+        print(f"\n**** TODO list ****\n{self.todo}")
 
         for i in range(3):
             for work in self.todo[i]:
@@ -63,7 +63,6 @@ class next_work():
                 cmd = CmdCreation(recipe,status,None,f_pos,c_pos)
                 self.todo[0].append(cmd)
         c_pos = FRY_POS +"_" +"wait_shaking"
-        print("###c pos:   ",c_pos)
         
         if ('waitshaking1' in status_f_pos):
             shake_n = recipe.get_shakeNum() 
@@ -140,4 +139,5 @@ class next_work():
 
 
     def __del__(self):
-        print("next_work processing done!")
+        #print("next_work processing done!")
+        pass

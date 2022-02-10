@@ -407,6 +407,9 @@ def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
     cmd.clear_commands()
     menu = recipe.get_menu()
     if c_pos == FRY_POS +"_"+ "fried":
+        
+        print("need to debug !!!!!!!!@@@@@@", f_pos)
+        print(PREV_POS_DATA)
         cmd.add_cmd(CMD_FRY_PICKUP(f_pos,10))
         cmd.add_cmd(CMD_AIR_SHAKE(f_pos))
         cmd.add_cmd(CMD_WAIT_PLACE(PREV_POS_DATA[f_pos], 10, pos1 = f_pos))
@@ -415,7 +418,7 @@ def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
         EARLY_FIN[f_pos] = False
         return cmd
     elif c_pos == FRY_POS +"_"+ "wait_shaking":
-        print(f"(menu: {menu}) frying basket processing ...")
+        print(f"(menu: {menu}) frying processing ...")
         cmd.add_cmd(CMD_FRY_PICKUP_N_SHAKE(f_pos, 10))
         cmd.set_cooking_pos(f_pos)
         cmd.add_cmd(CMD_CHANGE_STATUS(f_pos, status))
@@ -451,6 +454,7 @@ def CmdCreation(recipe,status,w_pos,f_pos,c_pos):
             cmd.add_cmd(CMD_SET_COOKING_TIME(f_pos,time = get_frying_time(status)))
             cmd.add_cmd(CMD_CHANGE_STATUS(f_pos,status))
             cmd.set_cooking_pos(f_pos)
+            PREV_POS_DATA[f_pos] = w_pos
             return cmd
         elif menu == 5:
             print("menu: Beer!")
